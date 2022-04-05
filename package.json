@@ -1,7 +1,7 @@
 {
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown",
-    "*.{js,css,md}": "prettier --write"
+    "*.{js,tsx,css,md}": "prettier --write"
   },
   "name": "flashcardsapp",
   "version": "1.0.0",

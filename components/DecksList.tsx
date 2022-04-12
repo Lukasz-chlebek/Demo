@@ -2,13 +2,22 @@ import { useState } from 'react'
 
 import { Button, Divider, Icon, List, ListItem, MenuItem, OverflowMenu } from '@ui-kitten/components'
 
-const OptionsIcon = (props: any) => <Icon name="more-vertical-outline" {...props} />
+const OptionsIcon = (props: any) => <Icon name="more-horizontal-outline" {...props} />
 
-const Deck = ({ item, index }: { item: any; index: number }) => {
+export interface Deck {
+  id: string
+  name: string
+  stats: {
+    new: number
+    review: number
+  }
+}
+
+const Deck = ({ item }: { item: Deck }) => {
   const [visible, setVisible] = useState(false)
 
   const OptionsButton = (props: any) => (
-    <Button {...props} accessoryLeft={OptionsIcon} onPress={() => setVisible(true)} />
+    <Button {...props} accessoryLeft={OptionsIcon} onPress={() => setVisible(true)} size="small" />
   )
 
   const OptionsMenu = () => (
@@ -26,15 +35,26 @@ const Deck = ({ item, index }: { item: any; index: number }) => {
 
   return (
     <ListItem
-      title={`${item} ${index + 1}`}
-      description={`Nowe: 1314 Powtorka: 134`}
+      title={`${item.name}`}
+      description={`Nowe: ${item.stats.new} Powtorka: ${item.stats.new}`}
       accessoryRight={OptionsMenu}
     />
   )
 }
 
 export const DecksList = () => {
-  const renderItem = ({ item, index }: any) => <Deck item={item} index={index} />
+  const renderItem = ({ item }: { item: Deck }) => <Deck item={item} />
 
-  return <List data={[1, 2, 3]} renderItem={renderItem} ItemSeparatorComponent={Divider} />
+  const data: Deck[] = [
+    {
+      id: 'id1',
+      name: 'nazwa',
+      stats: {
+        new: 0,
+        review: 0,
+      },
+    },
+  ]
+
+  return <List data={data} renderItem={renderItem} ItemSeparatorComponent={Divider} />
 }

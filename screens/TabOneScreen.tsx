@@ -1,30 +1,34 @@
-import { StyleSheet } from 'react-native'
-
 import { RootTabScreenProps } from '../types'
-import { Layout } from '@ui-kitten/components'
+import { Divider, Icon, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
 import { DecksList } from '../components/DecksList'
+import { useState } from 'react'
+
+const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+  const [menuVisible, setMenuVisible] = useState(false)
+
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible)
+  }
+
+  const renderMenuAction = () => <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
+
+  const renderRightActions = () => (
+    <OverflowMenu anchor={renderMenuAction} visible={menuVisible} onBackdropPress={toggleMenu}>
+      <MenuItem title="Eksport" />
+      <MenuItem title="Import" />
+    </OverflowMenu>
+  )
+
   return (
-    <Layout>
-      <DecksList />
-    </Layout>
+    <>
+      <TopNavigation title="Fiszki" alignment="center" accessoryRight={renderRightActions} />
+      <Divider />
+      <Layout>
+        <DecksList />
+      </Layout>
+    </>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-})

@@ -1,14 +1,14 @@
 import { StyleSheet } from 'react-native'
 
 import { RootTabScreenProps } from '../types'
-import { View } from 'react-native-ui-lib'
-import CardsList from '../components/CardsList'
+import { Layout } from '@ui-kitten/components'
+import { DecksList } from '../components/DecksList'
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   return (
-    <View flex paddingH-25 paddwingT-120 bg-white>
-      <CardsList />
-    </View>
+    <Layout>
+      <DecksList />
+    </Layout>
   )
 }
 

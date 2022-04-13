@@ -1,11 +1,11 @@
-import { RootTabScreenProps } from '../types'
+import { RootStackScreenProps } from '../types'
 import { Divider, Icon, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
 import { DecksList } from '../components/DecksList'
 import { useState } from 'react'
 
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function TabOneScreen({ navigation }: RootStackScreenProps<'Home'>) {
   const [menuVisible, setMenuVisible] = useState(false)
 
   const toggleMenu = () => {
@@ -31,4 +31,3 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     </>
   )
 }
-

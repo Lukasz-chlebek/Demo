@@ -1,7 +1,6 @@
 import { RootStackScreenProps } from '../types'
 import {
   Button,
-  ButtonGroup,
   Card,
   Divider,
   Icon,
@@ -16,7 +15,7 @@ import {
 } from '@ui-kitten/components'
 import { DecksList } from '../components/DecksList'
 import { useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 const AddIcon = (props: any) => <Icon {...props} name="plus-outline" />
@@ -54,18 +53,19 @@ export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>)
           onBackdropPress={() => setAddModalVisible(false)}
         >
           <Card disabled={true}>
-            <Text>Dodaj talię kart</Text>
+            <Text category="s1">Dodaj talię kart</Text>
             <Input
+              style={styles.input}
               value={newDeckName}
               placeholder="Podaj nazwę nowej talii"
               onChangeText={(nextValue) => setNewDeckName(nextValue)}
             />
-            <ButtonGroup>
-              <Button onPress={() => setAddModalVisible(false)} status="basic">
+            <View style={styles.actionContainer}>
+              <Button appearance="ghost" onPress={() => setAddModalVisible(false)}>
                 Anuluj
               </Button>
               <Button onPress={() => {}}>Zapisz</Button>
-            </ButtonGroup>
+            </View>
           </Card>
         </Modal>
 
@@ -78,5 +78,12 @@ export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>)
 const styles = StyleSheet.create({
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  input: {
+    marginVertical: 16,
+  },
+  actionContainer: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
   },
 })

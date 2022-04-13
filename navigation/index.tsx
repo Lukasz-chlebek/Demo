@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { ColorSchemeName } from 'react-native'
 import NotFoundScreen from '../screens/NotFoundScreen'
-import TabOneScreen from '../screens/TabOneScreen'
+import HomeScreen from '../screens/HomeScreen'
 import { RootStackParamList } from '../types'
 import LinkingConfiguration from './LinkingConfiguration'
 import ModalScreen from '../screens/ModalScreen'
@@ -24,7 +24,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 const RootNavigator = () => (
   <Stack.Navigator>
     <Stack.Group screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={TabOneScreen} />
+      <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} />
     </Stack.Group>
     <Stack.Group screenOptions={{ presentation: 'modal' }}>

@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 
-export default function TabOneScreen({ navigation }: RootStackScreenProps<'Home'>) {
+export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>) {
   const [menuVisible, setMenuVisible] = useState(false)
 
   const toggleMenu = () => {

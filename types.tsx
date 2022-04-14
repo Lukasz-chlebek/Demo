@@ -8,6 +8,9 @@ declare global {
 
 export type RootStackParamList = {
   Home: undefined
+  CardsList: {
+    deckId: string
+  }
   Modal: undefined
   NotFound: undefined
 }

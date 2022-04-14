@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen'
 import { RootStackParamList } from '../types'
 import LinkingConfiguration from './LinkingConfiguration'
 import ModalScreen from '../screens/ModalScreen'
+import CardsListScreen from '../screens/CardsListScreen'
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -26,6 +27,7 @@ const RootNavigator = () => (
     <Stack.Group screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} />
+      <Stack.Screen name="CardsList" component={CardsListScreen} />
     </Stack.Group>
     <Stack.Group screenOptions={{ presentation: 'modal' }}>
       <Stack.Screen name="Modal" component={ModalScreen} />

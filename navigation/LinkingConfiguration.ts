@@ -8,10 +8,11 @@ const linking: LinkingOptions<RootStackParamList> = {
   config: {
     screens: {
       Home: '',
+      CardsList: 'cards/:deckId',
       Modal: 'modal',
       NotFound: '*',
     },
   },
-};
+}
 
-export default linking;
+export default linking

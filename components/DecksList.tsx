@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { Button, Divider, Icon, List, ListItem, MenuItem, OverflowMenu } from '@ui-kitten/components'
+import { useNavigation } from '@react-navigation/native'
 
 const OptionsIcon = (props: any) => <Icon name="more-horizontal-outline" {...props} />
 
@@ -14,12 +15,14 @@ export interface Deck {
 }
 
 const Deck = ({ item }: { item: Deck }) => {
+  const navigation = useNavigation<any>() // @TODO: @kamil fixme
   const [visible, setVisible] = useState(false)
 
   const OptionsButton = (props: any) => (
     <Button {...props} accessoryLeft={OptionsIcon} onPress={() => setVisible(true)} size="small" />
   )
 
+  console.log('navigation', navigation)
   const OptionsMenu = () => (
     <OverflowMenu
       anchor={OptionsButton}
@@ -27,7 +30,13 @@ const Deck = ({ item }: { item: Deck }) => {
       onBackdropPress={() => setVisible(false)}
     >
       <MenuItem title="Zmiana nazwy" />
-      <MenuItem title="Lista słówek" />
+      <MenuItem
+        title="Lista słówek"
+        onPress={() => {
+          setVisible(false)
+          navigation.push('CardsList', { deckId: item.id })
+        }}
+      />
       <MenuItem title="Dodaj słówko" />
       <MenuItem title="Usuń" />
     </OverflowMenu>

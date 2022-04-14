@@ -3,36 +3,25 @@ import { Divider, Icon, Layout, TopNavigation, TopNavigationAction } from '@ui-k
 import { StyleSheet } from 'react-native'
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
-const SearchIcon = (props: any) => <Icon {...props} name="search" />
+const SaveIcon = (props: any) => <Icon {...props} name="save" />
 
-export default function CardsListScreen({ navigation }: RootStackScreenProps<'CardsList'>) {
+export default function AddCardScreen({ navigation }: RootStackScreenProps<'AddCard'>) {
   const renderBackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={() => navigation.replace('Home')} />
   )
-  const renderSearchAction = () => (
-    <TopNavigationAction
-      icon={SearchIcon}
-      onPress={() => {
-        // @TODO: @kamil display modal with input
-        // @TODO: @kamil scroll to desired card
-      }}
-    />
-  )
+
+  const renderSaveAction = () => <TopNavigationAction icon={SaveIcon} onPress={() => {}} />
 
   return (
     <>
       <TopNavigation
-        title="Fiszki"
+        title="Dodaj kartę"
         alignment="center"
         accessoryLeft={renderBackAction}
-        accessoryRight={renderSearchAction}
+        accessoryRight={renderSaveAction}
       />
       <Divider />
-      <Layout>
-        {/*    
-        // @TODO: @kamil cards list (virtual scroll)
-      */}
-      </Layout>
+      <Layout></Layout>
     </>
   )
 }

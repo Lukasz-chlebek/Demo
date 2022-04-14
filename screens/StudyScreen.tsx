@@ -6,7 +6,7 @@ import { useState } from 'react'
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 
-export default function StudyScreen({ navigation }: RootStackScreenProps<'Home'>) {
+export default function StudyScreen({ navigation }: RootStackScreenProps<'Study'>) {
   const [menuVisible, setMenuVisible] = useState(false)
 
   const toggleMenu = () => {

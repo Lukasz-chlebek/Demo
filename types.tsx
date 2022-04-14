@@ -14,6 +14,9 @@ export type RootStackParamList = {
   Study: {
     deckId: string
   }
+  AddCard: {
+    deckId: string
+  }
   Modal: undefined
   NotFound: undefined
 }

@@ -36,7 +36,13 @@ const Deck = ({ item }: { item: Deck }) => {
           navigation.push('CardsList', { deckId: item.id })
         }}
       />
-      <MenuItem title="Dodaj słówko" />
+      <MenuItem
+        title="Dodaj słówko"
+        onPress={() => {
+          setVisible(false)
+          navigation.push('AddCard', { deckId: item.id })
+        }}
+      />
       <MenuItem title="Usuń" />
     </OverflowMenu>
   )

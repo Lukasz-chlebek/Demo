@@ -10,6 +10,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       Home: '',
       CardsList: 'cards/:deckId',
       Study: 'study/:deckId',
+      AddCard: 'add-card/:deckId',
       Modal: 'modal',
       NotFound: '*',
     },

@@ -8,6 +8,7 @@ import { RootStackParamList } from '../types'
 import LinkingConfiguration from './LinkingConfiguration'
 import ModalScreen from '../screens/ModalScreen'
 import CardsListScreen from '../screens/CardsListScreen'
+import StudyScreen from '../screens/StudyScreen'
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -28,6 +29,7 @@ const RootNavigator = () => (
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} />
       <Stack.Screen name="CardsList" component={CardsListScreen} />
+      <Stack.Screen name="Study" component={StudyScreen} />
     </Stack.Group>
     <Stack.Group screenOptions={{ presentation: 'modal' }}>
       <Stack.Screen name="Modal" component={ModalScreen} />

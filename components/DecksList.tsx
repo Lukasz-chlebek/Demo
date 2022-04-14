@@ -22,7 +22,6 @@ const Deck = ({ item }: { item: Deck }) => {
     <Button {...props} accessoryLeft={OptionsIcon} onPress={() => setVisible(true)} size="small" />
   )
 
-  console.log('navigation', navigation)
   const OptionsMenu = () => (
     <OverflowMenu
       anchor={OptionsButton}
@@ -47,6 +46,10 @@ const Deck = ({ item }: { item: Deck }) => {
       title={`${item.name}`}
       description={`Nowe: ${item.stats.new} Powtorka: ${item.stats.new}`}
       accessoryRight={OptionsMenu}
+      onPress={() => {
+        setVisible(false)
+        navigation.push('Study', { deckId: item.id })
+      }}
     />
   )
 }

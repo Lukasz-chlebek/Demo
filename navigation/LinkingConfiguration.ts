@@ -9,6 +9,7 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       Home: '',
       CardsList: 'cards/:deckId',
+      Study: 'study/:deckId',
       Modal: 'modal',
       NotFound: '*',
     },

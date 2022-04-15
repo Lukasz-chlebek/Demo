@@ -2,9 +2,8 @@ import { useState } from 'react'
 
 import { Button, Divider, Icon, List, ListItem, MenuItem, OverflowMenu } from '@ui-kitten/components'
 import { useNavigation } from '@react-navigation/native'
-import { useSelector } from 'react-redux'
-import { RootState } from '../store'
-import { Deck } from '../features/home/home.slice'
+import { Deck } from '../features/home/deck'
+import { useGetAllQuery } from '../features/home/decks.service'
 
 const OptionsIcon = (props: any) => <Icon name="more-horizontal-outline" {...props} />
 
@@ -55,9 +54,9 @@ const DeckItem = ({ item }: { item: Deck }) => {
 }
 
 export const DecksList = () => {
-  const decks = useSelector((state: RootState) => state.home.decks)
+  const { data, error, isLoading } = useGetAllQuery()
 
   const renderItem = ({ item }: { item: Deck }) => <DeckItem item={item} />
 
-  return <List data={decks} renderItem={renderItem} ItemSeparatorComponent={Divider} />
+  return <List data={data} renderItem={renderItem} ItemSeparatorComponent={Divider} />
 }

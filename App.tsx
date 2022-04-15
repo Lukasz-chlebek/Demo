@@ -9,6 +9,8 @@ import React from 'react'
 import * as eva from '@eva-design/eva'
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
 import { EvaIconsPack } from '@ui-kitten/eva-icons'
+import { Provider } from 'react-redux'
+import { store } from './store'
 
 export default function App() {
   const isLoadingComplete = useCachedResources()
@@ -18,13 +20,15 @@ export default function App() {
     return null
   } else {
     return (
-      <SafeAreaProvider>
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={eva[colorScheme]}>
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
-        </ApplicationProvider>
-      </SafeAreaProvider>
+      <Provider store={store}>
+        <SafeAreaProvider>
+          <IconRegistry icons={EvaIconsPack} />
+          <ApplicationProvider {...eva} theme={eva[colorScheme]}>
+            <Navigation colorScheme={colorScheme} />
+            <StatusBar />
+          </ApplicationProvider>
+        </SafeAreaProvider>
+      </Provider>
     )
   }
 }

@@ -2,19 +2,13 @@ import { useState } from 'react'
 
 import { Button, Divider, Icon, List, ListItem, MenuItem, OverflowMenu } from '@ui-kitten/components'
 import { useNavigation } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store'
+import { Deck } from '../features/home/home.slice'
 
 const OptionsIcon = (props: any) => <Icon name="more-horizontal-outline" {...props} />
 
-export interface Deck {
-  id: string
-  name: string
-  stats: {
-    new: number
-    review: number
-  }
-}
-
-const Deck = ({ item }: { item: Deck }) => {
+const DeckItem = ({ item }: { item: Deck }) => {
   const navigation = useNavigation<any>() // @TODO: @kamil fixme
   const [visible, setVisible] = useState(false)
 
@@ -61,18 +55,9 @@ const Deck = ({ item }: { item: Deck }) => {
 }
 
 export const DecksList = () => {
-  const renderItem = ({ item }: { item: Deck }) => <Deck item={item} />
+  const decks = useSelector((state: RootState) => state.home.decks)
 
-  const data: Deck[] = [
-    {
-      id: 'id1',
-      name: 'nazwa',
-      stats: {
-        new: 0,
-        review: 0,
-      },
-    },
-  ]
+  const renderItem = ({ item }: { item: Deck }) => <DeckItem item={item} />
 
-  return <List data={data} renderItem={renderItem} ItemSeparatorComponent={Divider} />
+  return <List data={decks} renderItem={renderItem} ItemSeparatorComponent={Divider} />
 }

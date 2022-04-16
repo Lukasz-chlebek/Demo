@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack'
 
 declare global {
   namespace ReactNavigation {
@@ -25,3 +25,6 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
   RootStackParamList,
   Screen
 >
+
+export type RootStackNavigationProps<Screen extends keyof RootStackParamList> =
+  NativeStackNavigationProp<RootStackParamList, Screen>

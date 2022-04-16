@@ -4,11 +4,12 @@ import { Button, Divider, Icon, List, ListItem, MenuItem, OverflowMenu } from '@
 import { useNavigation } from '@react-navigation/native'
 import { Deck } from '../features/home/deck'
 import { useGetAllQuery } from '../features/home/decks.service'
+import { RootStackNavigationProps } from '../types'
 
 const OptionsIcon = (props: any) => <Icon name="more-horizontal-outline" {...props} />
 
 const DeckItem = ({ item }: { item: Deck }) => {
-  const navigation = useNavigation<any>() // @TODO: @kamil fixme
+  const navigation = useNavigation<RootStackNavigationProps<'Home'>>()
   const [visible, setVisible] = useState(false)
 
   const OptionsButton = (props: any) => (

@@ -2,7 +2,7 @@ import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Deck } from './deck'
 
 // @TODO: @kamil sqlite
-const db = [
+let db = [
   {
     id: 'id1',
     name: 'nazwa',
@@ -45,7 +45,27 @@ export const decksApi = createApi({
         }
       },
     }),
+    editDeckName: builder.mutation<Deck, { deckId: string; name: string }>({
+      invalidatesTags: ['Decks'],
+      async queryFn(body: any) {
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+
+        db = db.map((i) => {
+          if (i.id === body.deckId) {
+            return {
+              ...i,
+              name: body.name,
+            }
+          }
+          return i
+        })
+
+        return {
+          data: db.find((i) => i.id === body.deckId) as Deck,
+        }
+      },
+    }),
   }),
 })
 
-export const { useGetAllQuery, useAddDeckMutation } = decksApi
+export const { useGetAllQuery, useAddDeckMutation, useEditDeckNameMutation } = decksApi

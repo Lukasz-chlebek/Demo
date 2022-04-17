@@ -65,7 +65,26 @@ export const decksApi = createApi({
         }
       },
     }),
+    deleteDeck: builder.mutation<{}, { deckId: string }>({
+      invalidatesTags: ['Decks'],
+      async queryFn(body: any) {
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+
+        db = db.filter((i) => {
+          return i.id !== body.deckId
+        })
+
+        return {
+          data: {},
+        }
+      },
+    }),
   }),
 })
 
-export const { useGetAllQuery, useAddDeckMutation, useEditDeckNameMutation } = decksApi
+export const {
+  useGetAllQuery,
+  useAddDeckMutation,
+  useEditDeckNameMutation,
+  useDeleteDeckMutation,
+} = decksApi

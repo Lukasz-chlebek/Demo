@@ -1,5 +1,18 @@
 import { RootStackScreenProps } from '../types'
-import { Button, Card, Divider, Icon, Input, Layout, Modal, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
+import {
+  Button,
+  Card,
+  Divider,
+  Icon,
+  Input,
+  Layout,
+  Modal,
+  StyleService,
+  Text,
+  TopNavigation,
+  TopNavigationAction,
+  useStyleSheet,
+} from '@ui-kitten/components'
 import { StyleSheet, View } from 'react-native'
 import BigList from 'react-native-big-list'
 import { useRef, useState } from 'react'
@@ -9,10 +22,11 @@ const SearchIcon = (props: any) => <Icon {...props} name="search" />
 
 const getItem = (index: any) => ({
   id: Math.random().toString(12).substring(0),
-  title: `Item ${index + 1}`,
+  title: `Item${index + 1}`,
 })
 
 const DATA: any = new Array(500).fill(1).map((_, index) => getItem(index))
+const ITEM_HEIGHT = 60
 
 const SearchModal = ({
   visible,
@@ -77,6 +91,7 @@ const modalStyles = StyleSheet.create({
 export default function CardsListScreen({ navigation }: RootStackScreenProps<'CardsList'>) {
   const [searchModalVisible, setSearchModalVisible] = useState(false)
   const list = useRef<any>(null)
+  const styles = useStyleSheet(themedStyles);
 
   const renderBackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={() => navigation.replace('Home')} />
@@ -92,10 +107,12 @@ export default function CardsListScreen({ navigation }: RootStackScreenProps<'Ca
     />
   )
 
+
   const Item = ({ item }: any) => {
     return (
       <View style={styles.item}>
         <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.title2}>{item.title}</Text>
       </View>
     )
   }
@@ -131,7 +148,7 @@ export default function CardsListScreen({ navigation }: RootStackScreenProps<'Ca
             ref={list}
             data={DATA}
             renderItem={renderItem}
-            itemHeight={150}
+            itemHeight={ITEM_HEIGHT}
             keyExtractor={(item: any) => item.id}
           />
         </View>
@@ -140,16 +157,33 @@ export default function CardsListScreen({ navigation }: RootStackScreenProps<'Ca
   )
 }
 
-const styles = StyleSheet.create({
+const themedStyles = StyleService.create({
   item: {
-    backgroundColor: '#f9c2ff',
-    height: 150,
-    justifyContent: 'center',
-    marginVertical: 8,
-    marginHorizontal: 16,
-    padding: 20,
+    display: 'flex',
+    flexFlow: 'row',
+    height: ITEM_HEIGHT,
+    padding: 5,
+    borderBottomStyle: 'solid',
+    borderBottomWidth: 1,
+    borderBottomColor: 'border-basic-color-5',
   },
   title: {
-    fontSize: 32,
+    flex: 1,
+    fontSize: 12,
+    padding: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+  },
+  title2: {
+    flex: 1,
+    fontSize: 12,
+    padding: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    borderLeftStyle: 'solid',
+    borderLeftWidth: 1,
+    borderLeftColor: 'border-basic-color-5',
   },
 })

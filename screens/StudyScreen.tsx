@@ -62,13 +62,13 @@ export default function StudyScreen({ navigation }: RootStackScreenProps<'Study'
         {backVisible ? (
           <>
             <View style={styles.buttonContainer}>
-              <Button style={[styles.button, styles.dontKnow]} onPress={() => {}}>
+              <Button style={[styles.button]} status="danger" onPress={() => {}}>
                 Nie wiem
               </Button>
-              <Button style={[styles.button, styles.difficult]} onPress={() => {}}>
+              <Button style={[styles.button]} status="warning" onPress={() => {}}>
                 Trudne
               </Button>
-              <Button style={[styles.button, styles.know]} onPress={() => {}}>
+              <Button style={[styles.button]} status="success" onPress={() => {}}>
                 Wiem
               </Button>
             </View>
@@ -107,20 +107,5 @@ const themedStyles = StyleService.create({
   button: {
     flex: 1,
     marginHorizontal: 10,
-  },
-  dontKnow: {
-    backgroundColor: '#969696',
-    borderColor: '#969696',
-    color: 'white',
-  },
-  difficult: {
-    backgroundColor: '#FF9900',
-    borderColor: '#FF9900',
-    color: 'white',
-  },
-  know: {
-    backgroundColor: '#3CA617',
-    borderColor: '#3CA617',
-    color: 'white',
   },
 })

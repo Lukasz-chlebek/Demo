@@ -14,6 +14,7 @@ import {
 } from '@ui-kitten/components'
 import { ScrollView, View } from 'react-native'
 import React, { useState } from 'react'
+import { ConfirmationDialog } from '../components/ConfirmationDialog'
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
@@ -35,13 +36,25 @@ export default function StudyScreen({ navigation }: RootStackScreenProps<'Study'
     <>
       <OverflowMenu anchor={renderMenuAction} visible={menuVisible} onBackdropPress={toggleMenu}>
         <MenuItem title="Edytuj kartę" />
-        <MenuItem title="Usuń kartę" />
+        <MenuItem
+          title="Usuń kartę"
+          onPress={() => {
+            setMenuVisible(false)
+            setConfirmationDialogVisible(true)
+          }}
+        />
       </OverflowMenu>
     </>
   )
 
   const [backVisible, setBackVisible] = useState(false)
   const styles = useStyleSheet(themedStyles)
+  const [confirmationDialogVisible, setConfirmationDialogVisible] = useState(false)
+
+  const deleteCardAction = () => {
+    // @TODO: @kamil
+    return Promise.resolve()
+  }
 
   return (
     <>
@@ -79,6 +92,14 @@ export default function StudyScreen({ navigation }: RootStackScreenProps<'Study'
           </Button>
         )}
       </Layout>
+      <ConfirmationDialog
+        visible={confirmationDialogVisible}
+        title="Potwierdzenie"
+        message="Czy chcesz usunąć kartę?"
+        onCancel={() => setConfirmationDialogVisible(false)}
+        onDone={() => setConfirmationDialogVisible(false)}
+        action={deleteCardAction}
+      ></ConfirmationDialog>
     </>
   )
 }

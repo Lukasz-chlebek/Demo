@@ -152,6 +152,7 @@ export default function CardsListScreen({ navigation }: RootStackScreenProps<'Ca
             keyExtractor={(item: any) => item.id}
           />
         </View>
+
       </Layout>
     </>
   )

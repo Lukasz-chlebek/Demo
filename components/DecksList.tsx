@@ -6,77 +6,10 @@ import { Deck } from '../features/home/deck'
 import { useDeleteDeckMutation, useEditDeckNameMutation, useGetAllQuery } from '../features/home/decks.service'
 import { RootStackNavigationProps } from '../types'
 import { StyleSheet, View } from 'react-native'
+import { ConfirmationDialog } from './ConfirmationDialog'
 
 const OptionsIcon = (props: any) => <Icon name="more-horizontal-outline" {...props} />
 
-const ConfirmationDialog = ({
-  visible,
-  title,
-  message,
-  onCancel,
-  onDone,
-  action,
-}: {
-  visible: boolean
-  title: string
-  message: string
-  onCancel: () => void
-  onDone: () => void
-  action: () => Promise<void>
-}) => {
-  const [isLoading, setLoading] = useState(false)
-
-  const onConfirmPress = () => {
-    if (isLoading) {
-      return
-    }
-    setLoading(true)
-    action()
-      .then(() => {
-        setLoading(false)
-        onDone()
-      })
-      .catch(() => {
-        setLoading(false)
-      })
-  }
-
-  const onBackDropPress = () => {
-    if (isLoading) {
-      return
-    }
-    onCancel()
-  }
-
-  const onCancelPress = () => {
-    if (isLoading) {
-      return
-    }
-    onCancel()
-  }
-
-  const LoadingIndicator = (props: any) => (
-    <View style={[props.style, modalStyles.indicator]}>
-      <Spinner />
-    </View>
-  )
-
-  return (
-    <Modal visible={visible} backdropStyle={modalStyles.backdrop} onBackdropPress={onBackDropPress}>
-      <Card disabled={true}>
-        <Text category="s1">{title}</Text>
-        <Text>{message}</Text>
-        <View style={modalStyles.actionContainer}>
-          {isLoading ? <LoadingIndicator /> : undefined}
-          <Button appearance="ghost" onPress={onCancelPress}>
-            Anuluj
-          </Button>
-          <Button onPress={onConfirmPress}>Tak</Button>
-        </View>
-      </Card>
-    </Modal>
-  )
-}
 
 const EditDeckNameModal = ({
   visible,

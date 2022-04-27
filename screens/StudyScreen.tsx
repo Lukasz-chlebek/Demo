@@ -6,6 +6,7 @@ import {
   Layout,
   MenuItem,
   OverflowMenu,
+  Spinner,
   StyleService,
   Text,
   TopNavigation,
@@ -15,11 +16,58 @@ import {
 import { ScrollView, View } from 'react-native'
 import React, { useState } from 'react'
 import { ConfirmationDialog } from '../components/ConfirmationDialog'
+import { useGetQuery, useStoreMutation } from '../features/home/decks.service'
+import { Card } from '../features/home/deck'
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 
-export default function StudyScreen({ navigation }: RootStackScreenProps<'Study'>) {
+const StudyCard = (props: {
+  card: Card
+  styles: any
+  onPress: () => void
+  onPress1: () => void
+  onPress2: () => void
+}) => {
+  const [backVisible, setBackVisible] = useState(false)
+
+  return (
+    <>
+      <ScrollView>
+        <Text style={props.styles.front}>{props.card.front}</Text>
+
+        {backVisible ? <Text style={props.styles.back}>{props.card.back}</Text> : ''}
+      </ScrollView>
+
+      {backVisible ? (
+        <>
+          <View style={props.styles.buttonContainer}>
+            <Button style={[props.styles.button]} status="danger" onPress={props.onPress}>
+              Nie wiem
+            </Button>
+            <Button style={[props.styles.button]} status="warning" onPress={props.onPress1}>
+              Trudne
+            </Button>
+            <Button style={[props.styles.button]} status="success" onPress={props.onPress2}>
+              Wiem
+            </Button>
+          </View>
+        </>
+      ) : (
+        <Button
+          onPress={() => {
+            setBackVisible(true)
+          }}
+          style={props.styles.showBack}
+        >
+          Pokaż odpowiedź
+        </Button>
+      )}
+    </>
+  )
+}
+
+export default function StudyScreen({ navigation, route }: RootStackScreenProps<'Study'>) {
   const [menuVisible, setMenuVisible] = useState(false)
 
   const toggleMenu = () => {
@@ -47,16 +95,38 @@ export default function StudyScreen({ navigation }: RootStackScreenProps<'Study'
     </>
   )
 
-  const [backVisible, setBackVisible] = useState(false)
   const styles = useStyleSheet(themedStyles)
   const [confirmationDialogVisible, setConfirmationDialogVisible] = useState(false)
+  const [currentCard, setCurrentCard] = useState(0)
 
   const deleteCardAction = () => {
     // @TODO: @kamil
     return Promise.resolve()
   }
 
-  return (
+  const saveReply = (response: 'dontknow' | 'difficult' | 'know') => {
+    storeReply({
+      deckId: route.params.deckId,
+      cardId: data![currentCard].id, // @TODO: @kamil
+      response,
+    })
+      .unwrap()
+      .then(() => {
+        setCurrentCard(currentCard + 1) // @TODO: @kamil limit length
+        // @TODO: @kamil next card
+        // @TODO: @kamil reset StudyCard
+      })
+  }
+
+  const [storeReply, { isSuccess }] = useStoreMutation()
+
+  const { data, error, isLoading } = useGetQuery({
+    deckId: route.params.deckId,
+  })
+
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <>
       <TopNavigation
         title="Nauka"
@@ -66,31 +136,19 @@ export default function StudyScreen({ navigation }: RootStackScreenProps<'Study'
       />
       <Divider />
       <Layout style={{ flex: 1 }}>
-        <ScrollView>
-          <Text style={styles.front}>Front</Text>
-
-          {backVisible ? <Text style={styles.back}>Back</Text> : ''}
-        </ScrollView>
-
-        {backVisible ? (
-          <>
-            <View style={styles.buttonContainer}>
-              <Button style={[styles.button]} status="danger" onPress={() => {}}>
-                Nie wiem
-              </Button>
-              <Button style={[styles.button]} status="warning" onPress={() => {}}>
-                Trudne
-              </Button>
-              <Button style={[styles.button]} status="success" onPress={() => {}}>
-                Wiem
-              </Button>
-            </View>
-          </>
-        ) : (
-          <Button onPress={() => setBackVisible(true)} style={styles.showBack}>
-            Pokaż odpowiedź
-          </Button>
-        )}
+        <StudyCard
+          card={data![currentCard]}
+          styles={styles}
+          onPress={() => {
+            saveReply('dontknow')
+          }}
+          onPress1={() => {
+            saveReply('difficult')
+          }}
+          onPress2={() => {
+            saveReply('know')
+          }}
+        />
       </Layout>
       <ConfirmationDialog
         visible={confirmationDialogVisible}

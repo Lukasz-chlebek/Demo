@@ -67,12 +67,17 @@ export const cardsApi = createApi({
     }),
   }),
 })
-let dbStudy = {
+let dbStudy: any = {
   id1: [
     {
       id: 'card1',
       front: 'test',
       back: 'back',
+    },
+    {
+      id: 'card2',
+      front: 'test2',
+      back: 'back2',
     },
   ],
 }
@@ -85,9 +90,8 @@ export const studyApi = createApi({
     get: builder.query<Card[], { deckId: string }>({
       providesTags: ['Study'],
       async queryFn(params: { deckId: string }) {
-        console.log('dbCards[params.deckId]', dbCards, params.deckId)
         return {
-          data: dbCards[params.deckId] || [],
+          data: dbStudy[params.deckId] || [],
         }
       },
     }),
@@ -101,6 +105,7 @@ export const studyApi = createApi({
         cardId: string
         response: 'dontknow' | 'difficult' | 'know'
       }) {
+        console.log('store', params)
         await new Promise((resolve) => setTimeout(resolve, 1000))
 
         return {

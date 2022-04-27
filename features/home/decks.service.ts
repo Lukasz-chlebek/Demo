@@ -67,6 +67,49 @@ export const cardsApi = createApi({
     }),
   }),
 })
+let dbStudy = {
+  id1: [
+    {
+      id: 'card1',
+      front: 'test',
+      back: 'back',
+    },
+  ],
+}
+
+export const studyApi = createApi({
+  reducerPath: 'studyApi',
+  baseQuery: fakeBaseQuery<unknown>(),
+  tagTypes: ['Study'], // @TODO: @kamil fixme
+  endpoints: (builder) => ({
+    get: builder.query<Card[], { deckId: string }>({
+      providesTags: ['Study'],
+      async queryFn(params: { deckId: string }) {
+        console.log('dbCards[params.deckId]', dbCards, params.deckId)
+        return {
+          data: dbCards[params.deckId] || [],
+        }
+      },
+    }),
+    store: builder.mutation<
+      boolean,
+      { deckId: string; cardId: string; response: 'dontknow' | 'difficult' | 'know' }
+    >({
+      invalidatesTags: ['Study'],
+      async queryFn(params: {
+        deckId: string
+        cardId: string
+        response: 'dontknow' | 'difficult' | 'know'
+      }) {
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+
+        return {
+          data: true,
+        }
+      },
+    }),
+  }),
+})
 
 export const decksApi = createApi({
   reducerPath: 'decksApi',
@@ -146,3 +189,4 @@ export const {
 } = decksApi
 
 export const { useGetAllForDeckQuery, useAddCardMutation, useDeleteCardMutation } = cardsApi
+export const { useGetQuery, useStoreMutation } = studyApi

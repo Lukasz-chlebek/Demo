@@ -1,5 +1,5 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
-import { Deck } from './deck'
+import { Card, Deck } from './deck'
 
 // @TODO: @kamil sqlite
 let db = [
@@ -12,6 +12,62 @@ let db = [
     },
   },
 ]
+
+let dbCards: { [key: string]: Card[] } = {}
+
+export const cardsApi = createApi({
+  reducerPath: 'cardsApi',
+  baseQuery: fakeBaseQuery<unknown>(),
+  tagTypes: ['Cards'], // @TODO: @kamil fixme
+  endpoints: (builder) => ({
+    getAllForDeck: builder.query<Card[], { deckId: string }>({
+      providesTags: ['Cards'],
+      async queryFn(params: { deckId: string }) {
+        console.log('dbCards[params.deckId]', dbCards, params.deckId)
+        return {
+          data: dbCards[params.deckId] || [],
+        }
+      },
+    }),
+    addCard: builder.mutation<Card, { deckId: string; front: string; back: string }>({
+      invalidatesTags: ['Cards'],
+      async queryFn(params: { deckId: string; front: string; back: string }) {
+        const card = {
+          id: 'id1' + Math.random(),
+          front: params.front,
+          back: params.back,
+        }
+
+        if (!dbCards[params.deckId]) {
+          dbCards[params.deckId] = []
+        }
+        dbCards[params.deckId].push(card)
+
+        console.log('dbCards', dbCards)
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+
+        return {
+          data: card,
+        }
+      },
+    }),
+    deleteCard: builder.mutation<{}, { deckId: string; cardId: string }>({
+      invalidatesTags: ['Cards'],
+      async queryFn(params: { deckId: string; cardId: string }) {
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+
+        dbCards[params.deckId] = dbCards[params.deckId] = dbCards[params.deckId].filter((i) => {
+          return i.id !== params.cardId
+        })
+
+        return {
+          data: {},
+        }
+      },
+    }),
+  }),
+})
+
 export const decksApi = createApi({
   reducerPath: 'decksApi',
   baseQuery: fakeBaseQuery<unknown>(),
@@ -88,3 +144,5 @@ export const {
   useEditDeckNameMutation,
   useDeleteDeckMutation,
 } = decksApi
+
+export const { useGetAllForDeckQuery, useAddCardMutation, useDeleteCardMutation } = cardsApi

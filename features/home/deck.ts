@@ -6,3 +6,10 @@ export interface Deck {
     review: number
   }
 }
+
+// @TODO: @kamil rename
+export interface Card {
+  id: string
+  front: string
+  back: string
+}

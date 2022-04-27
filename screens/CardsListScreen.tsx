@@ -7,6 +7,7 @@ import {
   Input,
   Layout,
   Modal,
+  Spinner,
   StyleService,
   Text,
   TopNavigation,
@@ -16,16 +17,12 @@ import {
 import { StyleSheet, View } from 'react-native'
 import BigList from 'react-native-big-list'
 import { useRef, useState } from 'react'
+import { useGetAllForDeckQuery } from '../features/home/decks.service'
+import { Card as CardData } from '../features/home/deck'
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 const SearchIcon = (props: any) => <Icon {...props} name="search" />
 
-const getItem = (index: any) => ({
-  id: Math.random().toString(12).substring(0),
-  title: `Item${index + 1}`,
-})
-
-const DATA: any = new Array(500).fill(1).map((_, index) => getItem(index))
 const ITEM_HEIGHT = 60
 
 const SearchModal = ({
@@ -88,10 +85,10 @@ const modalStyles = StyleSheet.create({
   },
 })
 
-export default function CardsListScreen({ navigation }: RootStackScreenProps<'CardsList'>) {
+export default function CardsListScreen({ navigation, route }: RootStackScreenProps<'CardsList'>) {
   const [searchModalVisible, setSearchModalVisible] = useState(false)
   const list = useRef<any>(null)
-  const styles = useStyleSheet(themedStyles);
+  const styles = useStyleSheet(themedStyles)
 
   const renderBackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={() => navigation.replace('Home')} />
@@ -101,59 +98,65 @@ export default function CardsListScreen({ navigation }: RootStackScreenProps<'Ca
       icon={SearchIcon}
       onPress={() => {
         setSearchModalVisible(true)
-        // @TODO: @kamil display modal with input
-        // @TODO: @kamil scroll to desired card
       }}
     />
   )
 
-
-  const Item = ({ item }: any) => {
+  const Item = ({ item }: { item: CardData }) => {
     return (
       <View style={styles.item}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.title2}>{item.title}</Text>
+        <Text style={styles.title}>{item.front}</Text>
+        <Text style={styles.title2}>{item.back}</Text>
       </View>
     )
   }
 
-  const renderItem = ({ item, index }: any) => {
+  const renderItem = ({ item }: { item: CardData }) => {
     return <Item item={item} />
   }
 
+  const { data, error, isLoading } = useGetAllForDeckQuery({
+    deckId: route.params.deckId,
+  })
+
   return (
     <>
-      <SearchModal
-        visible={searchModalVisible}
-        onSearch={(query) => {
-          setSearchModalVisible(false)
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <SearchModal
+            visible={searchModalVisible}
+            onSearch={(query) => {
+              setSearchModalVisible(false)
 
-          const index = DATA.findIndex((i: any) => i.title.includes(query))
-          if (index) {
-            list.current.scrollToIndex({ index })
-          }
-        }}
-        onCancel={() => setSearchModalVisible(false)}
-      ></SearchModal>
-      <TopNavigation
-        title="Fiszki"
-        alignment="center"
-        accessoryLeft={renderBackAction}
-        accessoryRight={renderSearchAction}
-      />
-      <Divider />
-      <Layout style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
-          <BigList
-            ref={list}
-            data={DATA}
-            renderItem={renderItem}
-            itemHeight={ITEM_HEIGHT}
-            keyExtractor={(item: any) => item.id}
+              const index = data!.findIndex((i: any) => i.title.includes(query))
+              if (index) {
+                list.current.scrollToIndex({ index })
+              }
+            }}
+            onCancel={() => setSearchModalVisible(false)}
+          ></SearchModal>
+          <TopNavigation
+            title="Fiszki"
+            alignment="center"
+            accessoryLeft={renderBackAction}
+            accessoryRight={renderSearchAction}
           />
-        </View>
-
-      </Layout>
+          <Divider />
+          <Layout style={{ flex: 1 }}>
+            <View style={{ flex: 1 }}>
+              <BigList
+                ref={list}
+                data={data}
+                renderItem={renderItem}
+                itemHeight={ITEM_HEIGHT}
+                keyExtractor={(item: any) => item.id}
+              />
+            </View>
+          </Layout>
+        </>
+      )}
     </>
   )
 }

@@ -9,7 +9,6 @@ import {
   MenuItem,
   Modal,
   OverflowMenu,
-  Spinner,
   Text,
   TopNavigation,
   TopNavigationAction,
@@ -18,6 +17,7 @@ import { DecksList } from '../components/DecksList'
 import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useAddDeckMutation } from '../data/api'
+import { LoadingIndicator } from '../components/LoadingIndicator'
 
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 const AddIcon = (props: any) => <Icon {...props} name="plus-outline" />
@@ -69,12 +69,6 @@ const AddDeckModal = ({
     onAddCancel()
   }
 
-  const LoadingIndicator = (props: any) => (
-    <View style={[props.style, modalStyles.indicator]}>
-      <Spinner />
-    </View>
-  )
-
   return (
     <Modal visible={visible} backdropStyle={modalStyles.backdrop} onBackdropPress={onBackDropPress}>
       <Card disabled={true}>
@@ -108,10 +102,6 @@ const modalStyles = StyleSheet.create({
   actionContainer: {
     flexDirection: 'row',
     alignSelf: 'flex-end',
-  },
-  indicator: {
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 })
 

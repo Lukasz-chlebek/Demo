@@ -1,5 +1,5 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
-import { Card, Deck } from './deck'
+import { Deck, SingleCard } from './model'
 
 // @TODO: @kamil sqlite
 let db = [
@@ -13,14 +13,14 @@ let db = [
   },
 ]
 
-let dbCards: { [key: string]: Card[] } = {}
+let dbCards: { [key: string]: SingleCard[] } = {}
 
 export const cardsApi = createApi({
   reducerPath: 'cardsApi',
   baseQuery: fakeBaseQuery<unknown>(),
   tagTypes: ['Cards'], // @TODO: @kamil fixme
   endpoints: (builder) => ({
-    getAllForDeck: builder.query<Card[], { deckId: string }>({
+    getAllForDeck: builder.query<SingleCard[], { deckId: string }>({
       providesTags: ['Cards'],
       async queryFn(params: { deckId: string }) {
         console.log('dbCards[params.deckId]', dbCards, params.deckId)
@@ -29,7 +29,7 @@ export const cardsApi = createApi({
         }
       },
     }),
-    addCard: builder.mutation<Card, { deckId: string; front: string; back: string }>({
+    addCard: builder.mutation<SingleCard, { deckId: string; front: string; back: string }>({
       invalidatesTags: ['Cards'],
       async queryFn(params: { deckId: string; front: string; back: string }) {
         const card = {
@@ -87,7 +87,7 @@ export const studyApi = createApi({
   baseQuery: fakeBaseQuery<unknown>(),
   tagTypes: ['Study'], // @TODO: @kamil fixme
   endpoints: (builder) => ({
-    get: builder.query<Card[], { deckId: string }>({
+    get: builder.query<SingleCard[], { deckId: string }>({
       providesTags: ['Study'],
       async queryFn(params: { deckId: string }) {
         return {

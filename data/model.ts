@@ -7,10 +7,8 @@ export interface Deck {
   }
 }
 
-// @TODO: @kamil rename
-export interface Card {
+export interface SingleCard {
   id: string
   front: string
   back: string
 }
-

@@ -16,14 +16,14 @@ import {
 import { ScrollView, View } from 'react-native'
 import React, { useState } from 'react'
 import { ConfirmationDialog } from '../components/ConfirmationDialog'
-import { useGetQuery, useStoreMutation } from '../features/home/decks.service'
-import { Card } from '../features/home/deck'
+import { useGetQuery, useStoreMutation } from '../data/api'
+import { SingleCard } from '../data/model'
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 
 const StudyCard = (props: {
-  card: Card
+  card: SingleCard
   styles: any
   onPress: () => void
   onPress1: () => void

@@ -1,7 +1,8 @@
-import { Button, Card, Modal, Spinner, Text } from '@ui-kitten/components'
+import { Button, Card, Modal, Text } from '@ui-kitten/components'
 import { StyleSheet, View } from 'react-native'
 
 import { useState } from 'react'
+import { LoadingIndicator } from './LoadingIndicator'
 
 export const ConfirmationDialog = ({
   visible,
@@ -49,12 +50,6 @@ export const ConfirmationDialog = ({
     onCancel()
   }
 
-  const LoadingIndicator = (props: any) => (
-    <View style={[props.style, modalStyles.indicator]}>
-      <Spinner />
-    </View>
-  )
-
   return (
     <Modal visible={visible} backdropStyle={modalStyles.backdrop} onBackdropPress={onBackDropPress}>
       <Card disabled={true}>
@@ -79,10 +74,6 @@ const modalStyles = StyleSheet.create({
   actionContainer: {
     flexDirection: 'row',
     alignSelf: 'flex-end',
-  },
-  indicator: {
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   message: {
     marginBottom: 15,

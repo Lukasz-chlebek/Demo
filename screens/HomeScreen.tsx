@@ -17,7 +17,7 @@ import {
 import { DecksList } from '../components/DecksList'
 import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useAddDeckMutation } from '../features/home/decks.service'
+import { useAddDeckMutation } from '../data/api'
 
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 const AddIcon = (props: any) => <Icon {...props} name="plus-outline" />

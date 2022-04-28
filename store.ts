@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { cardsApi, decksApi, studyApi } from './features/home/decks.service'
+import { cardsApi, decksApi, studyApi } from './data/api'
 
 export const store = configureStore({
   reducer: {

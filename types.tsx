@@ -17,7 +17,6 @@ export type RootStackParamList = {
   AddCard: {
     deckId: string
   }
-  Modal: undefined
   NotFound: undefined
 }
 

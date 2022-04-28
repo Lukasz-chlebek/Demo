@@ -17,8 +17,8 @@ import {
 import { StyleSheet, View } from 'react-native'
 import BigList from 'react-native-big-list'
 import { useRef, useState } from 'react'
-import { useGetAllForDeckQuery } from '../features/home/decks.service'
-import { Card as CardData } from '../features/home/deck'
+import { useGetAllForDeckQuery } from '../data/api'
+import { SingleCard as CardData } from '../data/model'
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 const SearchIcon = (props: any) => <Icon {...props} name="search" />

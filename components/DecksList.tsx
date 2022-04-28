@@ -1,15 +1,15 @@
 import { useState } from 'react'
 
-import { Button, Card, Divider, Icon, Input, List, ListItem, MenuItem, Modal, OverflowMenu, Spinner, Text } from '@ui-kitten/components'
+import { Button, Card, Divider, Icon, Input, List, ListItem, MenuItem, Modal, OverflowMenu, Text } from '@ui-kitten/components'
 import { useNavigation } from '@react-navigation/native'
-import { Deck } from '../features/home/deck'
-import { useDeleteDeckMutation, useEditDeckNameMutation, useGetAllQuery } from '../features/home/decks.service'
+import { Deck } from '../data/model'
+import { useDeleteDeckMutation, useEditDeckNameMutation, useGetAllQuery } from '../data/api'
 import { RootStackNavigationProps } from '../types'
 import { StyleSheet, View } from 'react-native'
 import { ConfirmationDialog } from './ConfirmationDialog'
+import { LoadingIndicator } from './LoadingIndicator'
 
 const OptionsIcon = (props: any) => <Icon name="more-horizontal-outline" {...props} />
-
 
 const EditDeckNameModal = ({
   visible,
@@ -59,12 +59,6 @@ const EditDeckNameModal = ({
     onEditCancel()
   }
 
-  const LoadingIndicator = (props: any) => (
-    <View style={[props.style, modalStyles.indicator]}>
-      <Spinner />
-    </View>
-  )
-
   return (
     <Modal visible={visible} backdropStyle={modalStyles.backdrop} onBackdropPress={onBackDropPress}>
       <Card disabled={true}>
@@ -97,10 +91,6 @@ const modalStyles = StyleSheet.create({
   actionContainer: {
     flexDirection: 'row',
     alignSelf: 'flex-end',
-  },
-  indicator: {
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 })
 
@@ -188,7 +178,7 @@ const DeckItem = ({ item }: { item: Deck }) => {
 }
 
 export const DecksList = () => {
-  const { data, error, isLoading } = useGetAllQuery()
+  const { data } = useGetAllQuery()
 
   const renderItem = ({ item }: { item: Deck }) => <DeckItem item={item} />
 

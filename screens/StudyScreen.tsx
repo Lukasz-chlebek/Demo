@@ -132,23 +132,27 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
         title="Nauka"
         alignment="center"
         accessoryLeft={renderBackAction}
-        accessoryRight={renderRightActions}
+        accessoryRight={data![currentCard] ? renderRightActions : <></>}
       />
       <Divider />
       <Layout style={{ flex: 1 }}>
-        <StudyCard
-          card={data![currentCard]}
-          styles={styles}
-          onPress={() => {
-            saveReply('dontknow')
-          }}
-          onPress1={() => {
-            saveReply('difficult')
-          }}
-          onPress2={() => {
-            saveReply('know')
-          }}
-        />
+        {data![currentCard] ? (
+          <StudyCard
+            card={data![currentCard]}
+            styles={styles}
+            onPress={() => {
+              saveReply('dontknow')
+            }}
+            onPress1={() => {
+              saveReply('difficult')
+            }}
+            onPress2={() => {
+              saveReply('know')
+            }}
+          />
+        ) : (
+          <Text style={{ textAlign: 'center', marginTop: 15 }}>Brak kart do nauki</Text>
+        )}
       </Layout>
       <ConfirmationDialog
         visible={confirmationDialogVisible}

@@ -14,9 +14,9 @@ import {
   useStyleSheet,
 } from '@ui-kitten/components'
 import { ScrollView, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ConfirmationDialog } from '../components/ConfirmationDialog'
-import { useGetCardQuery, useGetQuery, useStoreMutation } from '../data/api'
+import { useDeleteCardMutation, useGetCardQuery, useGetQuery, useStoreMutation } from '../data/api'
 import { StudyItem } from '../data/model'
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
@@ -29,6 +29,7 @@ const StudyCard = (props: {
   onPress: () => void
   onPress1: () => void
   onPress2: () => void
+  onDoesNotExist: () => void
 }) => {
   const [backVisible, setBackVisible] = useState(false)
 
@@ -37,7 +38,13 @@ const StudyCard = (props: {
     cardId: props.item.cardId,
   })
 
-  return isLoading ? (
+  useEffect(() => {
+    if(!data && !isLoading){
+      props.onDoesNotExist()
+    }
+  }, [data])
+
+  return isLoading || !data ? (
     <Spinner />
   ) : (
     <>
@@ -116,9 +123,14 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
   const [confirmationDialogVisible, setConfirmationDialogVisible] = useState(false)
   const [currentCard, setCurrentCard] = useState(0)
 
+  const [deleteCard, { isLoading: isDeleteLoading, isSuccess: isDeleteSuccess }] =
+    useDeleteCardMutation()
+
   const deleteCardAction = () => {
-    // @TODO: @kamil
-    return Promise.resolve()
+    return deleteCard({
+      deckId: route.params.deckId,
+      cardId: data![currentCard].cardId,
+    }).unwrap()
   }
 
   const saveReply = (response: 'dontknow' | 'difficult' | 'know') => {
@@ -166,6 +178,10 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
             }}
             onPress2={() => {
               saveReply('know')
+            }}
+            onDoesNotExist={() => {
+              // @TODO: @kamil try next card or finish
+              navigation.replace('Home')
             }}
           />
         ) : (

@@ -60,12 +60,12 @@ export const cardsApi = createApi({
         }
       },
     }),
-    getCard: builder.query<SingleCard | undefined, { deckId: string; cardId: string }>({
+    getCard: builder.query<SingleCard | null, { deckId: string; cardId: string }>({
       providesTags: (result, error, arg) => [{ type: 'Cards', id: arg.cardId }],
       async queryFn(params: { deckId: string; cardId: string }) {
         console.log('dbCards[params.deckId]', dbCards)
         return {
-          data: dbCards[params.deckId].find((card) => card.id === params.cardId),
+          data: dbCards[params.deckId].find((card) => card.id === params.cardId) || null,
         }
       },
     }),
@@ -101,7 +101,7 @@ export const cardsApi = createApi({
       },
     }),
     deleteCard: builder.mutation<{}, { deckId: string; cardId: string }>({
-      invalidatesTags: ['Cards'],
+      invalidatesTags: (result, error, arg) => [{ type: 'Cards', id: arg.cardId }],
       async queryFn(params: { deckId: string; cardId: string }) {
         await new Promise((resolve) => setTimeout(resolve, 1000))
 

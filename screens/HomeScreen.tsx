@@ -1,18 +1,5 @@
 import { RootStackScreenProps } from '../types'
-import {
-  Button,
-  Card,
-  Divider,
-  Icon,
-  Input,
-  Layout,
-  MenuItem,
-  Modal,
-  OverflowMenu,
-  Text,
-  TopNavigation,
-  TopNavigationAction,
-} from '@ui-kitten/components'
+import { Button, Card, Divider, Icon, Input, Layout, Modal, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
 import { DecksList } from '../components/DecksList'
 import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -106,23 +93,11 @@ const modalStyles = StyleSheet.create({
 })
 
 export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>) {
-  const [menuVisible, setMenuVisible] = useState(false)
   const [addModalVisible, setAddModalVisible] = useState(false)
-
-  const toggleMenu = () => {
-    setMenuVisible(!menuVisible)
-  }
-
-  const renderMenuAction = () => <TopNavigationAction icon={MenuIcon} onPress={toggleMenu} />
 
   const renderRightActions = () => (
     <>
       <TopNavigationAction icon={AddIcon} onPress={() => setAddModalVisible(true)} />
-
-      <OverflowMenu anchor={renderMenuAction} visible={menuVisible} onBackdropPress={toggleMenu}>
-        <MenuItem title="Eksport" />
-        <MenuItem title="Import" />
-      </OverflowMenu>
     </>
   )
 

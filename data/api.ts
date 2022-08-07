@@ -1,5 +1,5 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
-import { Deck, SingleCard } from './model'
+import { Deck, SingleCard, StudyItem } from './model'
 
 // @TODO: @kamil sqlite
 let db = [
@@ -37,6 +37,7 @@ export const cardsApi = createApi({
         }
       },
     }),
+
     addCard: builder.mutation<SingleCard, { deckId: string; front: string; back: string }>({
       invalidatesTags: ['Cards'],
       async queryFn(params: { deckId: string; front: string; back: string }) {
@@ -60,7 +61,7 @@ export const cardsApi = createApi({
       },
     }),
     getCard: builder.query<SingleCard | undefined, { deckId: string; cardId: string }>({
-      providesTags: ['Cards'],
+      providesTags: (result, error, arg) => [{ type: 'Cards', id: arg.cardId }],
       async queryFn(params: { deckId: string; cardId: string }) {
         console.log('dbCards[params.deckId]', dbCards)
         return {
@@ -72,7 +73,7 @@ export const cardsApi = createApi({
       SingleCard,
       { deckId: string; cardId: string; front: string; back: string }
     >({
-      invalidatesTags: ['Cards'],
+      invalidatesTags: (result, error, arg) => [{ type: 'Cards', id: arg.cardId }],
       async queryFn(params: { deckId: string; cardId: string; front: string; back: string }) {
         const card = {
           id: 'id1' + Math.random(),
@@ -115,17 +116,10 @@ export const cardsApi = createApi({
     }),
   }),
 })
-let dbStudy: any = {
+let dbStudy: { [key: string]: StudyItem[] } = {
   id1: [
     {
-      id: 'card1',
-      front: 'test',
-      back: 'back',
-    },
-    {
-      id: 'card2',
-      front: 'test2',
-      back: 'back2',
+      cardId: 'card1',
     },
   ],
 }
@@ -135,7 +129,7 @@ export const studyApi = createApi({
   baseQuery: fakeBaseQuery<unknown>(),
   tagTypes: ['Study'], // @TODO: @kamil fixme
   endpoints: (builder) => ({
-    get: builder.query<SingleCard[], { deckId: string }>({
+    get: builder.query<StudyItem[], { deckId: string }>({
       providesTags: ['Study'],
       async queryFn(params: { deckId: string }) {
         return {

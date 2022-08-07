@@ -16,14 +16,15 @@ import {
 import { ScrollView, View } from 'react-native'
 import React, { useState } from 'react'
 import { ConfirmationDialog } from '../components/ConfirmationDialog'
-import { useGetQuery, useStoreMutation } from '../data/api'
-import { SingleCard } from '../data/model'
+import { useGetCardQuery, useGetQuery, useStoreMutation } from '../data/api'
+import { StudyItem } from '../data/model'
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 
 const StudyCard = (props: {
-  card: SingleCard
+  deckId: string
+  item: StudyItem
   styles: any
   onPress: () => void
   onPress1: () => void
@@ -31,12 +32,19 @@ const StudyCard = (props: {
 }) => {
   const [backVisible, setBackVisible] = useState(false)
 
-  return (
+  const { data, error, isLoading } = useGetCardQuery({
+    deckId: props.deckId,
+    cardId: props.item.cardId,
+  })
+
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <>
       <ScrollView>
-        <Text style={props.styles.front}>{props.card.front}</Text>
+        <Text style={props.styles.front}>{data!.front}</Text>
 
-        {backVisible ? <Text style={props.styles.back}>{props.card.back}</Text> : ''}
+        {backVisible ? <Text style={props.styles.back}>{data!.back}</Text> : ''}
       </ScrollView>
 
       {backVisible ? (
@@ -89,7 +97,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
             setMenuVisible(false)
             navigation.push('EditCard', {
               deckId: route.params.deckId,
-              cardId: data![currentCard].id,
+              cardId: data![currentCard].cardId,
             })
           }}
         />
@@ -116,7 +124,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
   const saveReply = (response: 'dontknow' | 'difficult' | 'know') => {
     storeReply({
       deckId: route.params.deckId,
-      cardId: data![currentCard].id, // @TODO: @kamil
+      cardId: data![currentCard].cardId, // @TODO: @kamil
       response,
     })
       .unwrap()
@@ -147,7 +155,8 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
       <Layout style={{ flex: 1 }}>
         {data![currentCard] ? (
           <StudyCard
-            card={data![currentCard]}
+            deckId={route.params.deckId}
+            item={data![currentCard]}
             styles={styles}
             onPress={() => {
               saveReply('dontknow')

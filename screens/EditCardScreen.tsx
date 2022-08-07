@@ -46,7 +46,6 @@ export function EditCardScreen({
             setBack('')
 
             navigation.pop()
-            // @TODO: @kamil refresh card view
           })
       }}
     />

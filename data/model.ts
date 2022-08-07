@@ -12,3 +12,7 @@ export interface SingleCard {
   front: string
   back: string
 }
+
+export interface StudyItem {
+  cardId: string
+}

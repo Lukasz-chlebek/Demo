@@ -17,6 +17,10 @@ export type RootStackParamList = {
   AddCard: {
     deckId: string
   }
+  EditCard: {
+    deckId: string
+    cardId: string
+  }
   NotFound: undefined
 }
 

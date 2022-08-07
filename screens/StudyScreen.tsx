@@ -83,7 +83,16 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
   const renderRightActions = () => (
     <>
       <OverflowMenu anchor={renderMenuAction} visible={menuVisible} onBackdropPress={toggleMenu}>
-        <MenuItem title="Edytuj kartę" />
+        <MenuItem
+          title="Edytuj kartę"
+          onPress={() => {
+            setMenuVisible(false)
+            navigation.push('EditCard', {
+              deckId: route.params.deckId,
+              cardId: data![currentCard].id,
+            })
+          }}
+        />
         <MenuItem
           title="Usuń kartę"
           onPress={() => {

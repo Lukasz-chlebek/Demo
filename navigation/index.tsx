@@ -9,6 +9,7 @@ import LinkingConfiguration from './LinkingConfiguration'
 import CardsListScreen from '../screens/CardsListScreen'
 import StudyScreen from '../screens/StudyScreen'
 import AddCardScreen from '../screens/AddCardScreen'
+import EditCardLoaderScreen from '../screens/EditCardScreen'
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -30,6 +31,7 @@ const RootNavigator = () => (
       <Stack.Screen name="NotFound" component={NotFoundScreen} />
       <Stack.Screen name="CardsList" component={CardsListScreen} />
       <Stack.Screen name="AddCard" component={AddCardScreen} />
+      <Stack.Screen name="EditCard" component={EditCardLoaderScreen} />
       <Stack.Screen name="Study" component={StudyScreen} />
     </Stack.Group>
   </Stack.Navigator>

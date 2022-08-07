@@ -13,7 +13,15 @@ let db = [
   },
 ]
 
-let dbCards: { [key: string]: SingleCard[] } = {}
+let dbCards: { [key: string]: SingleCard[] } = {
+  id1: [
+    {
+      id: 'card1',
+      front: 'test',
+      back: 'back',
+    },
+  ],
+}
 
 export const cardsApi = createApi({
   reducerPath: 'cardsApi',
@@ -42,6 +50,46 @@ export const cardsApi = createApi({
           dbCards[params.deckId] = []
         }
         dbCards[params.deckId].push(card)
+
+        console.log('dbCards', dbCards)
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+
+        return {
+          data: card,
+        }
+      },
+    }),
+    getCard: builder.query<SingleCard | undefined, { deckId: string; cardId: string }>({
+      providesTags: ['Cards'],
+      async queryFn(params: { deckId: string; cardId: string }) {
+        console.log('dbCards[params.deckId]', dbCards)
+        return {
+          data: dbCards[params.deckId].find((card) => card.id === params.cardId),
+        }
+      },
+    }),
+    editCard: builder.mutation<
+      SingleCard,
+      { deckId: string; cardId: string; front: string; back: string }
+    >({
+      invalidatesTags: ['Cards'],
+      async queryFn(params: { deckId: string; cardId: string; front: string; back: string }) {
+        const card = {
+          id: 'id1' + Math.random(),
+          front: params.front,
+          back: params.back,
+        }
+
+        dbCards[params.deckId] = dbCards[params.deckId].map((card) => {
+          if (card.id === params.cardId) {
+            return {
+              id: params.cardId,
+              front: params.front,
+              back: params.back,
+            }
+          }
+          return card
+        })
 
         console.log('dbCards', dbCards)
         await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -193,5 +241,11 @@ export const {
   useDeleteDeckMutation,
 } = decksApi
 
-export const { useGetAllForDeckQuery, useAddCardMutation, useDeleteCardMutation } = cardsApi
+export const {
+  useGetAllForDeckQuery,
+  useAddCardMutation,
+  useEditCardMutation,
+  useDeleteCardMutation,
+  useGetCardQuery,
+} = cardsApi
 export const { useGetQuery, useStoreMutation } = studyApi

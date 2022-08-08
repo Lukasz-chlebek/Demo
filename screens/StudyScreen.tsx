@@ -60,7 +60,7 @@ const StudyCard = (props: {
       <ScrollView>
         <Text style={props.styles.front}>{data!.front}</Text>
 
-        {backVisible ? <Text style={props.styles.back}>{data!.back}</Text> : ''}
+        {backVisible ? <Text style={props.styles.back}>{data!.back}</Text> : <></>}
       </ScrollView>
 
       {backVisible ? (

@@ -143,7 +143,6 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
   }
 
   const saveReply = (response: 'dontknow' | 'difficult' | 'know') => {
-    // @TODO: @kamil loading indicator
     storeReply({
       deckId: route.params.deckId,
       cardId: data![currentCard].cardId, // @TODO: @kamil
@@ -157,7 +156,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
       })
   }
 
-  const [storeReply, { isSuccess }] = useStoreMutation()
+  const [storeReply, { isSuccess, isLoading: isReplyLoading }] = useStoreMutation()
 
   const { data, error, isLoading } = useGetQuery({
     deckId: route.params.deckId,
@@ -175,27 +174,35 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
       />
       <Divider />
       <Layout style={{ flex: 1 }}>
-        {data![currentCard] ? (
-          <StudyCard
-            deckId={route.params.deckId}
-            item={data![currentCard]}
-            styles={styles}
-            onPress={() => {
-              saveReply('dontknow')
-            }}
-            onPress1={() => {
-              saveReply('difficult')
-            }}
-            onPress2={() => {
-              saveReply('know')
-            }}
-            onDoesNotExist={() => {
-              // @TODO: @kamil try next card or finish
-              navigation.replace('Home')
-            }}
-          />
+        {isReplyLoading ? (
+          <View style={{ marginTop: 25, alignSelf: 'center' }}>
+            <Spinner />
+          </View>
         ) : (
-          <Text style={{ textAlign: 'center', marginTop: 15 }}>Brak kart do nauki</Text>
+          <>
+            {data![currentCard] ? (
+              <StudyCard
+                deckId={route.params.deckId}
+                item={data![currentCard]}
+                styles={styles}
+                onPress={() => {
+                  saveReply('dontknow')
+                }}
+                onPress1={() => {
+                  saveReply('difficult')
+                }}
+                onPress2={() => {
+                  saveReply('know')
+                }}
+                onDoesNotExist={() => {
+                  // @TODO: @kamil try next card or finish
+                  navigation.replace('Home')
+                }}
+              />
+            ) : (
+              <Text style={{ textAlign: 'center', marginTop: 15 }}>Brak kart do nauki</Text>
+            )}
+          </>
         )}
       </Layout>
       <ConfirmationDialog

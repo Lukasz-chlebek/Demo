@@ -142,6 +142,12 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
     }).unwrap()
   }
 
+  const nextCard = () => {
+    if (currentCard < data!.length) {
+      setCurrentCard(currentCard + 1)
+    }
+  }
+
   const saveReply = (response: 'dontknow' | 'difficult' | 'know') => {
     storeReply({
       deckId: route.params.deckId,
@@ -150,9 +156,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
     })
       .unwrap()
       .then(() => {
-        setCurrentCard(currentCard + 1) // @TODO: @kamil limit length
-        // @TODO: @kamil next card
-        // @TODO: @kamil reset StudyCard
+        nextCard()
       })
   }
 
@@ -195,8 +199,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
                   saveReply('know')
                 }}
                 onDoesNotExist={() => {
-                  // @TODO: @kamil try next card or finish
-                  navigation.replace('Home')
+                  nextCard()
                 }}
               />
             ) : (

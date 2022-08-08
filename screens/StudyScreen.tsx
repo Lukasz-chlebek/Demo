@@ -33,15 +33,24 @@ const StudyCard = (props: {
 }) => {
   const [backVisible, setBackVisible] = useState(false)
 
-  const { data, error, isLoading } = useGetCardQuery({
-    deckId: props.deckId,
-    cardId: props.item.cardId,
-  })
+  const { data, error, isLoading } = useGetCardQuery(
+    {
+      deckId: props.deckId,
+      cardId: props.item.cardId,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    },
+  )
 
   useEffect(() => {
-    if(!data && !isLoading){
+    if (!data && !isLoading) {
       props.onDoesNotExist()
     }
+  }, [data])
+
+  useEffect(() => {
+    setBackVisible(false)
   }, [data])
 
   return isLoading || !data ? (
@@ -134,6 +143,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
   }
 
   const saveReply = (response: 'dontknow' | 'difficult' | 'know') => {
+    // @TODO: @kamil loading indicator
     storeReply({
       deckId: route.params.deckId,
       cardId: data![currentCard].cardId, // @TODO: @kamil

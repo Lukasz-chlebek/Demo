@@ -20,6 +20,11 @@ let dbCards: { [key: string]: SingleCard[] } = {
       front: 'test',
       back: 'back',
     },
+    {
+      id: 'card2',
+      front: 'test2',
+      back: 'back2',
+    },
   ],
 }
 
@@ -120,6 +125,9 @@ let dbStudy: { [key: string]: StudyItem[] } = {
   id1: [
     {
       cardId: 'card1',
+    },
+    {
+      cardId: 'card2',
     },
   ],
 }

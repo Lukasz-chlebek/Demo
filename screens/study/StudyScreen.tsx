@@ -30,7 +30,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
     useDeleteCardMutation()
   const [storeReply, { isSuccess, isLoading: isReplyLoading }] = useStoreMutation()
 
-  const { data, error, isLoading } = useGetQuery({
+  const { data: studyItems, error, isLoading } = useGetQuery({
     deckId: route.params.deckId,
   })
 
@@ -53,7 +53,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
             setMenuVisible(false)
             navigation.push('EditCard', {
               deckId: route.params.deckId,
-              cardId: data![currentCard].cardId,
+              cardId: studyItems![currentCard].cardId,
             })
           }}
         />
@@ -71,12 +71,12 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
   const deleteCardAction = () => {
     return deleteCard({
       deckId: route.params.deckId,
-      cardId: data![currentCard].cardId,
+      cardId: studyItems![currentCard].cardId,
     }).unwrap()
   }
 
   const nextCard = () => {
-    if (currentCard < data!.length) {
+    if (currentCard < studyItems!.length) {
       setCurrentCard(currentCard + 1)
     }
   }
@@ -84,7 +84,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
   const saveReply = (response: 'dontknow' | 'difficult' | 'know') => {
     storeReply({
       deckId: route.params.deckId,
-      cardId: data![currentCard].cardId, // @TODO: @kamil
+      cardId: studyItems![currentCard].cardId, // @TODO: @kamil
       response,
     })
       .unwrap()
@@ -101,7 +101,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
         title="Nauka"
         alignment="center"
         accessoryLeft={renderBackAction}
-        accessoryRight={data![currentCard] ? renderRightActions : <></>}
+        accessoryRight={studyItems![currentCard] ? renderRightActions : <></>}
       />
       <Divider />
       <Layout style={{ flex: 1 }}>
@@ -111,10 +111,10 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
           </View>
         ) : (
           <>
-            {data![currentCard] ? (
+            {studyItems![currentCard] ? (
               <StudyCard
                 deckId={route.params.deckId}
-                item={data![currentCard]}
+                item={studyItems![currentCard]}
                 styles={styles}
                 onPress={() => {
                   saveReply('dontknow')

@@ -1,8 +1,9 @@
-import { Button, Spinner, Text } from '@ui-kitten/components'
+import { Button, Text } from '@ui-kitten/components'
 import { ScrollView, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useGetCardQuery } from '../../data/api'
 import { StudyItem } from '../../data/model'
+import { LoadingIndicator } from '../../components/LoadingIndicator'
 
 export const StudyCard = (props: {
   deckId: string
@@ -15,7 +16,7 @@ export const StudyCard = (props: {
 }) => {
   const [backVisible, setBackVisible] = useState(false)
 
-  const { data, error, isLoading } = useGetCardQuery(
+  const { data: card, isLoading } = useGetCardQuery(
     {
       deckId: props.deckId,
       cardId: props.item.cardId,
@@ -26,25 +27,33 @@ export const StudyCard = (props: {
   )
 
   useEffect(() => {
-    if (!data && !isLoading) {
+    if (!card && !isLoading) {
       props.onDoesNotExist()
     }
-  }, [data])
+  }, [card, isLoading])
 
   useEffect(() => {
     setBackVisible(false)
-  }, [data])
+  }, [card])
 
-  return isLoading || !data ? (
-    <Spinner />
-  ) : (
+  const onShowBackPress = () => {
+    setBackVisible(true)
+  }
+
+  if (isLoading) {
+    return <LoadingIndicator></LoadingIndicator>
+  }
+
+  if (!card) {
+    return <></>
+  }
+
+  return (
     <>
       <ScrollView>
-        <Text style={props.styles.front}>{data!.front}</Text>
-
-        {backVisible ? <Text style={props.styles.back}>{data!.back}</Text> : <></>}
+        <Text style={props.styles.front}>{card.front}</Text>
+        {backVisible ? <Text style={props.styles.back}>{card.back}</Text> : <></>}
       </ScrollView>
-
       {backVisible ? (
         <>
           <View style={props.styles.buttonContainer}>
@@ -60,12 +69,7 @@ export const StudyCard = (props: {
           </View>
         </>
       ) : (
-        <Button
-          onPress={() => {
-            setBackVisible(true)
-          }}
-          style={props.styles.showBack}
-        >
+        <Button onPress={onShowBackPress} style={props.styles.showBack}>
           Pokaż odpowiedź
         </Button>
       )}

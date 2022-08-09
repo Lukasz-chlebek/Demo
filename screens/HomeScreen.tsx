@@ -1,14 +1,14 @@
 import { RootStackScreenProps } from '../types'
 import { Button, Card, Divider, Icon, Input, Layout, Modal, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
 import { DecksList } from '../components/DecksList'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useAddDeckMutation } from '../data/api'
+import { useAddDeckMutation, useGetAllQuery } from '../data/api'
 import { LoadingIndicator } from '../components/LoadingIndicator'
+import { useFocusEffect } from '@react-navigation/native'
 
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 const AddIcon = (props: any) => <Icon {...props} name="plus-outline" />
-
 
 const AddDeckModal = ({
   visible,
@@ -94,11 +94,18 @@ const modalStyles = StyleSheet.create({
 
 export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>) {
   const [addModalVisible, setAddModalVisible] = useState(false)
+  const { data, isLoading, refetch } = useGetAllQuery()
 
   const renderRightActions = () => (
     <>
       <TopNavigationAction icon={AddIcon} onPress={() => setAddModalVisible(true)} />
     </>
+  )
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch()
+    }, []),
   )
 
   return (
@@ -112,7 +119,7 @@ export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>)
           onAddSuccess={() => setAddModalVisible(false)}
         ></AddDeckModal>
 
-        <DecksList />
+        {isLoading ? <LoadingIndicator /> : <DecksList decks={data!} />}
       </Layout>
     </>
   )

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Button, Card, Divider, Icon, Input, List, ListItem, MenuItem, Modal, OverflowMenu, Text } from '@ui-kitten/components'
 import { useNavigation } from '@react-navigation/native'
 import { Deck } from '../data/model'
-import { useDeleteDeckMutation, useEditDeckNameMutation, useGetAllQuery } from '../data/api'
+import { useDeleteDeckMutation, useEditDeckNameMutation } from '../data/api'
 import { RootStackNavigationProps } from '../types'
 import { StyleSheet, View } from 'react-native'
 import { ConfirmationDialog } from './ConfirmationDialog'
@@ -177,10 +177,9 @@ const DeckItem = ({ item }: { item: Deck }) => {
   )
 }
 
-export const DecksList = () => {
-  const { data } = useGetAllQuery()
+export const DecksList = ({decks}: {decks: Deck[]}) => {
 
   const renderItem = ({ item }: { item: Deck }) => <DeckItem item={item} />
 
-  return <List data={data} renderItem={renderItem} ItemSeparatorComponent={Divider} />
+  return <List data={decks} renderItem={renderItem} ItemSeparatorComponent={Divider} />
 }

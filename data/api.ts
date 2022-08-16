@@ -1,6 +1,52 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Deck, SingleCard, StudyItem } from './model'
 
+import connect, { sql } from '@databases/expo'
+import { Platform } from 'react-native'
+
+const database = connect('flash-card')
+
+export const ready = () => {
+  if (Platform.OS === 'web') {
+    throw new Error('Web not supported due to SQLite usage')
+  }
+  database.tx(function* (tx) {
+    yield tx.query(sql`
+    CREATE TABLE IF NOT EXISTS schema_version (
+      version INT NOT NULL
+    );
+  `)
+
+    const versionRecord = yield tx.query(sql`
+    SELECT version FROM schema_version;
+  `)
+
+    const version = versionRecord.length ? versionRecord[0].version : 0
+
+    if (version < 1) {
+      yield tx.query(sql`
+      CREATE TABLE decks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+      );
+    `)
+    }
+
+    const LATEST_VERSION = 1
+    if (version === 0) {
+      yield tx.query(sql`
+      INSERT INTO schema_version
+      VALUES (${LATEST_VERSION});
+    `)
+    } else {
+      yield tx.query(sql`
+      UPDATE schema_version
+      SET version = ${LATEST_VERSION};
+    `)
+    }
+  })
+}
+
 // @TODO: @kamil sqlite
 let db = [
   {
@@ -175,27 +221,25 @@ export const decksApi = createApi({
       providesTags: ['Decks'],
       async queryFn() {
         return {
-          data: [...db],
+          data: await database.query(sql`SELECT * FROM decks;`),
         }
       },
     }),
     addDeck: builder.mutation<Deck, { name: string }>({
       invalidatesTags: ['Decks'],
       async queryFn(body: any) {
-        const deck = {
-          id: 'id1' + body.name,
-          name: body.name,
-          stats: {
-            new: 0,
-            review: 0,
-          },
-        }
-        db.push(deck)
-
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-
+        const id = await database.query(
+          sql`INSERT into decks (name) VALUES (${body.name}) RETURNING id;`,
+        )
         return {
-          data: deck,
+          data: {
+            id: +id,
+            name: body.name,
+            stats: {
+              new: 0,
+              review: 0, // @TODO: @kamil
+            },
+          },
         }
       },
     }),

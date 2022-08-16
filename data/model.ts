@@ -1,5 +1,5 @@
 export interface Deck {
-  id: string
+  id: any // @TODO: @kamil
   name: string
   stats: {
     new: number

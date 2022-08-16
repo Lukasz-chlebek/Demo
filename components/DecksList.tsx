@@ -152,7 +152,7 @@ const DeckItem = ({ item }: { item: Deck }) => {
     <>
       <ListItem
         title={`${item.name}`}
-        description={`Nowe: ${item.stats.new} Powtorka: ${item.stats.new}`}
+        // description={`Nowe: ${item.stats.new} Powtorka: ${item.stats.new}`}
         accessoryRight={OptionsMenu}
         onPress={() => {
           setVisible(false)

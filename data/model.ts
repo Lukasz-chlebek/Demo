@@ -8,7 +8,7 @@ export interface Deck {
 }
 
 export interface SingleCard {
-  id: string
+  id: any // @TODO: @kamil
   front: string
   back: string
 }

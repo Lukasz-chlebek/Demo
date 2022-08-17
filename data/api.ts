@@ -25,14 +25,26 @@ export const ready = () => {
 
     if (version < 1) {
       yield tx.query(sql`
-      CREATE TABLE decks (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL
-      );
-    `)
+        CREATE TABLE decks (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL
+        );
+      `)
     }
 
-    const LATEST_VERSION = 1
+    if(version < 2){
+      yield tx.query(sql`
+        CREATE TABLE cards (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          deckid INTEGER NOT NULL,
+          front TEXT NOT NULL,
+          back TEXT NOT NULL,
+          FOREIGN KEY(deckid) REFERENCES decks(id)
+        );
+      `)
+    }
+
+    const LATEST_VERSION = 2
     if (version === 0) {
       yield tx.query(sql`
       INSERT INTO schema_version
@@ -47,33 +59,6 @@ export const ready = () => {
   })
 }
 
-// @TODO: @kamil sqlite
-let db = [
-  {
-    id: 'id1',
-    name: 'nazwa',
-    stats: {
-      new: 0,
-      review: 0,
-    },
-  },
-]
-
-let dbCards: { [key: string]: SingleCard[] } = {
-  id1: [
-    {
-      id: 'card1',
-      front: 'test',
-      back: 'back',
-    },
-    {
-      id: 'card2',
-      front: 'test2',
-      back: 'back2',
-    },
-  ],
-}
-
 export const cardsApi = createApi({
   reducerPath: 'cardsApi',
   baseQuery: fakeBaseQuery<unknown>(),
@@ -82,83 +67,75 @@ export const cardsApi = createApi({
     getAllForDeck: builder.query<SingleCard[], { deckId: string }>({
       providesTags: ['Cards'],
       async queryFn(params: { deckId: string }) {
-        console.log('dbCards[params.deckId]', dbCards, params.deckId)
+        const result = await database.query(sql`SELECT * FROM cards WHERE deckid=${params.deckId};`)
+
         return {
-          data: dbCards[params.deckId] || [],
+          data: result.map((r) => {
+            return {
+              id: r.id,
+              front: r.front,
+              back: r.back,
+            }
+          }),
         }
       },
     }),
-
     addCard: builder.mutation<SingleCard, { deckId: string; front: string; back: string }>({
       invalidatesTags: ['Cards'],
       async queryFn(params: { deckId: string; front: string; back: string }) {
-        const card = {
-          id: 'id1' + Math.random(),
-          front: params.front,
-          back: params.back,
-        }
-
-        if (!dbCards[params.deckId]) {
-          dbCards[params.deckId] = []
-        }
-        dbCards[params.deckId].push(card)
-
-        console.log('dbCards', dbCards)
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        const id = await database.query(
+          sql`INSERT into cards (deckid, front, back) VALUES (${params.deckId},${params.front},${params.back}) RETURNING id;`,
+        )
 
         return {
-          data: card,
+          data: {
+            id,
+            front: params.front,
+            back: params.back,
+          },
         }
       },
     }),
     getCard: builder.query<SingleCard | null, { deckId: string; cardId: string }>({
       providesTags: (result, error, arg) => [{ type: 'Cards', id: arg.cardId }],
       async queryFn(params: { deckId: string; cardId: string }) {
-        console.log('dbCards[params.deckId]', dbCards)
-        return {
-          data: dbCards[params.deckId].find((card) => card.id === params.cardId) || null,
-        }
-      },
-    }),
-    editCard: builder.mutation<
-      SingleCard,
-      { deckId: string; cardId: string; front: string; back: string }
-    >({
-      invalidatesTags: (result, error, arg) => [{ type: 'Cards', id: arg.cardId }],
-      async queryFn(params: { deckId: string; cardId: string; front: string; back: string }) {
-        const card = {
-          id: 'id1' + Math.random(),
-          front: params.front,
-          back: params.back,
-        }
-
-        dbCards[params.deckId] = dbCards[params.deckId].map((card) => {
-          if (card.id === params.cardId) {
-            return {
-              id: params.cardId,
-              front: params.front,
-              back: params.back,
-            }
+        const result = await database.query(
+          sql`SELECT * FROM cards WHERE deckid=${params.deckId} and id=${params.cardId};`,
+        )
+        if (!result.length) {
+          return {
+            data: null,
           }
-          return card
-        })
-
-        console.log('dbCards', dbCards)
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-
+        }
         return {
-          data: card,
+          data: {
+            id: result[0].id,
+            front: result[0].front,
+            back: result[0].back,
+          },
         }
       },
     }),
+    editCard: builder.mutation<{}, { deckId: string; cardId: string; front: string; back: string }>(
+      {
+        invalidatesTags: (result, error, arg) => [{ type: 'Cards', id: arg.cardId }],
+        async queryFn(params: { deckId: string; cardId: string; front: string; back: string }) {
+          await database.query(
+            sql`UPDATE cards SET front=${params.front}, back=${params.back} WHERE deckid=${params.deckId} and id=${params.cardId}`,
+          )
+
+          return {
+            data: {},
+          }
+        },
+      },
+    ),
     deleteCard: builder.mutation<{}, { deckId: string; cardId: string }>({
       invalidatesTags: (result, error, arg) => [{ type: 'Cards', id: arg.cardId }],
       async queryFn(params: { deckId: string; cardId: string }) {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-
-        dbCards[params.deckId] = dbCards[params.deckId] = dbCards[params.deckId].filter((i) => {
-          return i.id !== params.cardId
-        })
+        await database.query(
+          sql`DELETE FROM cards WHERE deckid=${params.deckId} and id=${params.cardId}`,
+        )
 
         return {
           data: {},
@@ -256,7 +233,7 @@ export const decksApi = createApi({
     deleteDeck: builder.mutation<{}, { deckId: string }>({
       invalidatesTags: ['Decks'],
       async queryFn(body) {
-        await database.query(sql`DELETE * FROM decks WHERE id=${body.deckId}`)
+        await database.query(sql`DELETE FROM decks WHERE id=${body.deckId}`)
 
         return {
           data: {},

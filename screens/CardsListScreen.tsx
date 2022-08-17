@@ -49,7 +49,12 @@ const SearchModal = ({
   }
 
   return (
-    <Modal visible={visible} backdropStyle={modalStyles.backdrop} onBackdropPress={onBackDropPress}>
+    <Modal
+      visible={visible}
+      style={{ width: 300 }}
+      backdropStyle={modalStyles.backdrop}
+      onBackdropPress={onBackDropPress}
+    >
       <Card disabled={true}>
         <Text category="s1">Szukaj...</Text>
         <Input

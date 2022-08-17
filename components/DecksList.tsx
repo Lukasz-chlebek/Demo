@@ -61,7 +61,12 @@ const EditDeckNameModal = ({
   }
 
   return (
-    <Modal visible={visible} backdropStyle={modalStyles.backdrop} onBackdropPress={onBackDropPress}>
+    <Modal
+      visible={visible}
+      style={{ width: 300 }}
+      backdropStyle={modalStyles.backdrop}
+      onBackdropPress={onBackDropPress}
+    >
       <Card disabled={true}>
         <Text category="s1">Zmiana nazwy talii</Text>
         <Input
@@ -179,8 +184,7 @@ const DeckItem = ({ item }: { item: Deck }) => {
   )
 }
 
-export const DecksList = ({decks}: {decks: Deck[]}) => {
-
+export const DecksList = ({ decks }: { decks: Deck[] }) => {
   const renderItem = ({ item }: { item: Deck }) => <DeckItem item={item} />
 
   return <List data={decks} renderItem={renderItem} ItemSeparatorComponent={Divider} />

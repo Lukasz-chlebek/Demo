@@ -11,11 +11,9 @@ const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 const AddIcon = (props: any) => <Icon {...props} name="plus-outline" />
 
 const AddDeckModal = ({
-  visible,
   onAddCancel,
   onAddSuccess,
 }: {
-  visible: boolean
   onAddCancel: () => void
   onAddSuccess: () => void
 }) => {
@@ -57,7 +55,12 @@ const AddDeckModal = ({
   }
 
   return (
-    <Modal visible={visible} backdropStyle={modalStyles.backdrop} onBackdropPress={onBackDropPress}>
+    <Modal
+      visible={true}
+      style={{ width: 300 }}
+      backdropStyle={modalStyles.backdrop}
+      onBackdropPress={onBackDropPress}
+    >
       <Card disabled={true}>
         <Text category="s1">Dodaj talię kart</Text>
         <Input
@@ -113,11 +116,14 @@ export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>)
       <TopNavigation title="Fiszki" alignment="center" accessoryRight={renderRightActions} />
       <Divider />
       <Layout>
-        <AddDeckModal
-          visible={addModalVisible}
-          onAddCancel={() => setAddModalVisible(false)}
-          onAddSuccess={() => setAddModalVisible(false)}
-        ></AddDeckModal>
+        {addModalVisible ? (
+          <AddDeckModal
+            onAddCancel={() => setAddModalVisible(false)}
+            onAddSuccess={() => setAddModalVisible(false)}
+          ></AddDeckModal>
+        ) : (
+          <></>
+        )}
 
         {isLoading ? <LoadingIndicator /> : <DecksList decks={data!} />}
       </Layout>

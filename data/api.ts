@@ -227,7 +227,7 @@ export const decksApi = createApi({
     }),
     addDeck: builder.mutation<Deck, { name: string }>({
       invalidatesTags: ['Decks'],
-      async queryFn(body: any) {
+      async queryFn(body) {
         const id = await database.query(
           sql`INSERT into decks (name) VALUES (${body.name}) RETURNING id;`,
         )
@@ -243,34 +243,20 @@ export const decksApi = createApi({
         }
       },
     }),
-    editDeckName: builder.mutation<Deck, { deckId: string; name: string }>({
+    editDeckName: builder.mutation<{}, { deckId: string; name: string }>({
       invalidatesTags: ['Decks'],
-      async queryFn(body: any) {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-
-        db = db.map((i) => {
-          if (i.id === body.deckId) {
-            return {
-              ...i,
-              name: body.name,
-            }
-          }
-          return i
-        })
+      async queryFn(body) {
+        await database.query(sql`UPDATE decks SET name=${body.name} WHERE id=${body.deckId}`)
 
         return {
-          data: db.find((i) => i.id === body.deckId) as Deck,
+          data: {},
         }
       },
     }),
     deleteDeck: builder.mutation<{}, { deckId: string }>({
       invalidatesTags: ['Decks'],
-      async queryFn(body: any) {
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-
-        db = db.filter((i) => {
-          return i.id !== body.deckId
-        })
+      async queryFn(body) {
+        await database.query(sql`DELETE * FROM decks WHERE id=${body.deckId}`)
 
         return {
           data: {},

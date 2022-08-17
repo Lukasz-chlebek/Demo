@@ -16,14 +16,15 @@ const EditDeckNameModal = ({
   onEditCancel,
   onEditSuccess,
   deckId,
+  deckName,
 }: {
   deckId: string
-
+  deckName: string
   visible: boolean
   onEditCancel: () => void
   onEditSuccess: () => void
 }) => {
-  const [newDeckName, setNewDeckName] = useState('')
+  const [newDeckName, setNewDeckName] = useState(deckName)
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [editDeckName, { isLoading, isSuccess }] = useEditDeckNameMutation()
 
@@ -161,6 +162,7 @@ const DeckItem = ({ item }: { item: Deck }) => {
       />
       <EditDeckNameModal
         deckId={item.id}
+        deckName={item.name}
         visible={editModalVisible}
         onEditCancel={() => setEditModalVisible(false)}
         onEditSuccess={() => setEditModalVisible(false)}

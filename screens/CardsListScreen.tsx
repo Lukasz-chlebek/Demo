@@ -135,7 +135,7 @@ export default function CardsListScreen({ navigation, route }: RootStackScreenPr
             onSearch={(query) => {
               setSearchModalVisible(false)
 
-              const index = data!.findIndex((i: any) => i.title.includes(query))
+              const index = data!.findIndex((i) => i.front.includes(query) || i.back.includes(query))
               if (index) {
                 list.current.scrollToIndex({ index })
               }
@@ -156,7 +156,7 @@ export default function CardsListScreen({ navigation, route }: RootStackScreenPr
                 data={data}
                 renderItem={renderItem}
                 itemHeight={ITEM_HEIGHT}
-                keyExtractor={(item: any) => item.id}
+                keyExtractor={(item) => item.id}
               />
             </View>
           </Layout>

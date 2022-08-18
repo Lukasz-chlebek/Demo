@@ -32,7 +32,7 @@ export const ready = () => {
       `)
     }
 
-    if(version < 2){
+    if (version < 2) {
       yield tx.query(sql`
         CREATE TABLE cards (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,7 +44,19 @@ export const ready = () => {
       `)
     }
 
-    const LATEST_VERSION = 2
+    if (version < 3) {
+      yield tx.query(sql`
+        CREATE TABLE cards_response (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          cardid INTEGER NOT NULL,
+          response TEXT NOT NULL,
+          created_at INTEGER NOT NULL,
+          FOREIGN KEY(cardid) REFERENCES cards(id)
+        );
+      `)
+    }
+
+    const LATEST_VERSION = 3
     if (version === 0) {
       yield tx.query(sql`
       INSERT INTO schema_version
@@ -170,16 +182,19 @@ export const studyApi = createApi({
     }),
     store: builder.mutation<
       boolean,
-      { deckId: string; cardId: string; response: 'dontknow' | 'difficult' | 'know' }
+      { cardId: string; response: 'dontknow' | 'difficult' | 'know' }
     >({
       invalidatesTags: ['Study'],
       async queryFn(params: {
-        deckId: string
+        deckId: string // @TODO: @kamil
         cardId: string
         response: 'dontknow' | 'difficult' | 'know'
       }) {
-        console.log('store', params)
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        const id = await database.query(
+          sql`INSERT into cards_response (cardid, response, created_at) VALUES (${params.cardId},${
+            params.response
+          },${new Date().getTime()})`,
+        )
 
         return {
           data: true,

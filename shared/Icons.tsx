@@ -6,7 +6,3 @@ export const SearchIcon = (props: any) => <Icon {...props} name="search" />
 export const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 export const SaveIcon = (props: any) => <Icon {...props} name="save" />
 export const OptionsIcon = (props: any) => <Icon name="more-horizontal-outline" {...props} />
-
-
-
-

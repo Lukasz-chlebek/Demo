@@ -19,7 +19,6 @@ import { useGetQuery, useStoreMutation } from '../../data/studyApi'
 import { useDeleteCardMutation } from '../../data/cardsApi'
 import { BackIcon, MenuIcon } from '../../../../shared/Icons'
 
-
 export default function StudyScreen({ navigation, route }: RootStackScreenProps<'Study'>) {
   const styles = useStyleSheet(themedStyles)
 

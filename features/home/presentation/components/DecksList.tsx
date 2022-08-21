@@ -23,7 +23,12 @@ const DeckItem = ({ item }: { item: Deck }) => {
   }
 
   const OptionsButton = (props: unknown) => (
-    <Button {...props} accessoryLeft={OptionsIcon} onPress={() => setOptionsVisible(true)} size="small" />
+    <Button
+      {...props}
+      accessoryLeft={OptionsIcon}
+      onPress={() => setOptionsVisible(true)}
+      size="small"
+    />
   )
 
   const OptionsMenu = () => (

@@ -1,5 +1,5 @@
 export interface SingleCard {
-    id: number
-    front: string
-    back: string
+  id: number
+  front: string
+  back: string
 }

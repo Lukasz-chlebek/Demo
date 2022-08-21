@@ -11,8 +11,15 @@ export const decksApi = createApi({
     getAll: builder.query<Deck[], void>({
       providesTags: ['Decks'],
       async queryFn() {
+        const decks = await database.query(sql`SELECT * FROM decks;`)
         return {
-          data: await database.query(sql`SELECT * FROM decks;`),
+          data: decks.map((deck) => ({
+            ...deck,
+            stats: {
+              new: 0,
+              review: 0, // @TODO: @kamil
+            },
+          })),
         }
       },
     }),

@@ -42,7 +42,7 @@ export default function CardsListScreen({ navigation, route }: RootStackScreenPr
     return <Item item={item} />
   }
 
-  const { data, error, isLoading } = useGetAllForDeckQuery({
+  const { data, isLoading } = useGetAllForDeckQuery({
     deckId: route.params.deckId,
   })
 

@@ -12,6 +12,7 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons'
 import { Provider } from 'react-redux'
 import { store } from './core/store'
 import { ready } from './core/database'
+import Toast from 'react-native-toast-message'
 
 export default function App() {
   const isLoadingComplete = useCachedResources()
@@ -39,6 +40,7 @@ export default function App() {
           <ApplicationProvider {...eva} theme={eva[colorScheme]}>
             <Navigation colorScheme={colorScheme} />
             <StatusBar />
+            <Toast />
           </ApplicationProvider>
         </SafeAreaProvider>
       </Provider>

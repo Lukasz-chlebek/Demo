@@ -1,7 +1,7 @@
-import { Deck } from '../../../data/model'
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 import { database } from '../../../core/database'
 import { sql } from '@databases/expo'
+import { Deck } from '../domain/deck'
 
 export const decksApi = createApi({
   reducerPath: 'decksApi',
@@ -34,7 +34,7 @@ export const decksApi = createApi({
         }
       },
     }),
-    editDeckName: builder.mutation<{}, { deckId: Deck['id']; name: string }>({
+    editDeckName: builder.mutation<{}, { deckId: number; name: string }>({
       invalidatesTags: ['Decks'],
       async queryFn(body) {
         await database.query(sql`UPDATE decks SET name=${body.name} WHERE id=${body.deckId}`)
@@ -44,7 +44,7 @@ export const decksApi = createApi({
         }
       },
     }),
-    deleteDeck: builder.mutation<{}, { deckId: Deck['id'] }>({
+    deleteDeck: builder.mutation<{}, { deckId: number }>({
       invalidatesTags: ['Decks'],
       async queryFn(body) {
         await database.query(sql`DELETE FROM decks WHERE id=${body.deckId}`)

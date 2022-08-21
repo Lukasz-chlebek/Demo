@@ -18,7 +18,7 @@ const EditDeckNameModal = ({
   deckId,
   deckName,
 }: {
-  deckId: Deck['id']
+  deckId: number
   deckName: string
   visible: boolean
   onEditCancel: () => void

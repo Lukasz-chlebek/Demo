@@ -2,7 +2,7 @@ import { RootStackScreenProps } from '../../../../core/navigation/types'
 import { Divider, Input, Layout, Spinner, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
 import { StyleSheet } from 'react-native'
 import { useState } from 'react'
-import { useAddCardMutation } from '../../data/cards_api'
+import { useAddCardMutation } from '../../data/cardsApi'
 import { BackIcon, SaveIcon } from '../../../../shared/Icons'
 
 export default function AddCardScreen({ navigation, route }: RootStackScreenProps<'AddCard'>) {

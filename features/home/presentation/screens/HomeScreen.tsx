@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { LoadingIndicator } from '../../../../shared/LoadingIndicator'
 import { useFocusEffect } from '@react-navigation/native'
-import { useAddDeckMutation, useGetAllQuery } from '../../data/home_api'
+import { useAddDeckMutation, useGetAllQuery } from '../../data/homeApi'
 import { AddIcon } from '../../../../shared/Icons'
 
 

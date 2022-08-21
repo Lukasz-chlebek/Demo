@@ -15,8 +15,8 @@ import { View } from 'react-native'
 import React, { useState } from 'react'
 import { ConfirmationDialog } from '../../../../shared/ConfirmationDialog'
 import { StudyCard } from '../components/StudyCard'
-import { useGetQuery, useStoreMutation } from '../../data/study_api'
-import { useDeleteCardMutation } from '../../data/cards_api'
+import { useGetQuery, useStoreMutation } from '../../data/studyApi'
+import { useDeleteCardMutation } from '../../data/cardsApi'
 import { BackIcon, MenuIcon } from '../../../../shared/Icons'
 
 

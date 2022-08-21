@@ -17,7 +17,7 @@ import { StyleSheet, View } from 'react-native'
 import BigList from 'react-native-big-list'
 import { useRef, useState } from 'react'
 import { SingleCard } from '../../domain/card'
-import { useGetAllForDeckQuery } from '../../data/cards_api'
+import { useGetAllForDeckQuery } from '../../data/cardsApi'
 import { BackIcon, SearchIcon } from '../../../../shared/Icons'
 
 

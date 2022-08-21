@@ -7,7 +7,7 @@ import { RootStackNavigationProps } from '../../../../core/navigation/types'
 import { StyleSheet, View } from 'react-native'
 import { ConfirmationDialog } from '../../../../shared/ConfirmationDialog'
 import { LoadingIndicator } from '../../../../shared/LoadingIndicator'
-import { useDeleteDeckMutation, useEditDeckNameMutation } from '../../data/home_api'
+import { useDeleteDeckMutation, useEditDeckNameMutation } from '../../data/homeApi'
 import { OptionsIcon } from '../../../../shared/Icons'
 
 const EditDeckNameModal = ({

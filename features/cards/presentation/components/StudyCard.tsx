@@ -3,7 +3,7 @@ import { ScrollView, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { LoadingIndicator } from '../../../../shared/LoadingIndicator'
 import { StudyItem } from '../../domain/study'
-import { useGetCardQuery } from '../../data/cards_api'
+import { useGetCardQuery } from '../../data/cardsApi'
 
 export const StudyCard = (props: {
   deckId: number

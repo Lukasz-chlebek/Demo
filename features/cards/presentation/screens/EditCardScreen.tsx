@@ -2,7 +2,7 @@ import { RootStackScreenProps } from '../../../../core/navigation/types'
 import { Divider, Input, Layout, Spinner, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
 import { StyleSheet } from 'react-native'
 import { useState } from 'react'
-import { useEditCardMutation, useGetCardQuery } from '../../data/cards_api'
+import { useEditCardMutation, useGetCardQuery } from '../../data/cardsApi'
 import { SingleCard } from '../../domain/card'
 import { BackIcon, SaveIcon } from '../../../../shared/Icons'
 

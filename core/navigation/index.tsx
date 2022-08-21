@@ -2,14 +2,14 @@ import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { ColorSchemeName } from 'react-native'
-import NotFoundScreen from '../screens/NotFoundScreen'
-import HomeScreen from '../screens/HomeScreen'
-import { RootStackParamList } from '../types'
+import NotFoundScreen from './NotFoundScreen'
+import HomeScreen from '../../features/home/presentation/screens/HomeScreen'
+import { RootStackParamList } from './types'
 import LinkingConfiguration from './LinkingConfiguration'
-import CardsListScreen from '../screens/CardsListScreen'
-import StudyScreen from '../screens/study/StudyScreen'
-import AddCardScreen from '../screens/AddCardScreen'
-import EditCardLoaderScreen from '../screens/EditCardScreen'
+import CardsListScreen from '../../features/cards/presentation/screens/CardsListScreen'
+import StudyScreen from '../../features/study/presentation/screens/StudyScreen'
+import AddCardScreen from '../../features/cards/presentation/screens/AddCardScreen'
+import EditCardLoaderScreen from '../../features/cards/presentation/screens/EditCardScreen'
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (

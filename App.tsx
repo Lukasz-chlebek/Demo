@@ -1,16 +1,16 @@
 import { StatusBar } from 'expo-status-bar'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import useCachedResources from './hooks/useCachedResources'
-import useColorScheme from './hooks/useColorScheme'
-import Navigation from './navigation'
+import useCachedResources from './core/hooks/useCachedResources'
+import useColorScheme from './core/hooks/useColorScheme'
+import Navigation from './core/navigation'
 
 import React, { useEffect, useState } from 'react'
 import * as eva from '@eva-design/eva'
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
 import { EvaIconsPack } from '@ui-kitten/eva-icons'
 import { Provider } from 'react-redux'
-import { store } from './store'
+import { store } from './core/store'
 import { ready } from './data/api'
 
 export default function App() {

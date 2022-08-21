@@ -2,12 +2,12 @@ import { useState } from 'react'
 
 import { Button, Card, Divider, Icon, Input, List, ListItem, MenuItem, Modal, OverflowMenu, Text } from '@ui-kitten/components'
 import { useNavigation } from '@react-navigation/native'
-import { Deck } from '../data/model'
-import { useDeleteDeckMutation, useEditDeckNameMutation } from '../data/api'
-import { RootStackNavigationProps } from '../types'
+import { Deck } from '../../../../data/model'
+import { useDeleteDeckMutation, useEditDeckNameMutation } from '../../../../data/api'
+import { RootStackNavigationProps } from '../../../../core/navigation/types'
 import { StyleSheet, View } from 'react-native'
-import { ConfirmationDialog } from './ConfirmationDialog'
-import { LoadingIndicator } from './LoadingIndicator'
+import { ConfirmationDialog } from '../../../../shared/ConfirmationDialog'
+import { LoadingIndicator } from '../../../../shared/LoadingIndicator'
 
 const OptionsIcon = (props: any) => <Icon name="more-horizontal-outline" {...props} />
 

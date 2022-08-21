@@ -1,10 +1,10 @@
-import { RootStackScreenProps } from '../types'
+import { RootStackScreenProps } from '../../../../core/navigation/types'
 import { Button, Card, Divider, Icon, Input, Layout, Modal, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
 import { DecksList } from '../components/DecksList'
 import { useCallback, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useAddDeckMutation, useGetAllQuery } from '../data/api'
-import { LoadingIndicator } from '../components/LoadingIndicator'
+import { useAddDeckMutation, useGetAllQuery } from '../../../../data/api'
+import { LoadingIndicator } from '../../../../shared/LoadingIndicator'
 import { useFocusEffect } from '@react-navigation/native'
 
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />

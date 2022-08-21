@@ -1,9 +1,9 @@
 import { Button, Text } from '@ui-kitten/components'
 import { ScrollView, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useGetCardQuery } from '../../data/api'
-import { StudyItem } from '../../data/model'
-import { LoadingIndicator } from '../../components/LoadingIndicator'
+import { useGetCardQuery } from '../../../../data/api'
+import { StudyItem } from '../../../../data/model'
+import { LoadingIndicator } from '../../../../shared/LoadingIndicator'
 
 export const StudyCard = (props: {
   deckId: string

@@ -1,4 +1,4 @@
-import { RootStackScreenProps } from '../../types'
+import { RootStackScreenProps } from '../../../../core/navigation/types'
 import {
   Divider,
   Icon,
@@ -14,9 +14,9 @@ import {
 } from '@ui-kitten/components'
 import { View } from 'react-native'
 import React, { useState } from 'react'
-import { ConfirmationDialog } from '../../components/ConfirmationDialog'
-import { useDeleteCardMutation, useGetQuery, useStoreMutation } from '../../data/api'
-import { StudyCard } from './StudyCard'
+import { ConfirmationDialog } from '../../../../shared/ConfirmationDialog'
+import { useDeleteCardMutation, useGetQuery, useStoreMutation } from '../../../../data/api'
+import { StudyCard } from '../components/StudyCard'
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />

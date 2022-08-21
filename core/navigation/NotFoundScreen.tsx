@@ -1,5 +1,5 @@
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import { RootStackScreenProps } from '../types'
+import { RootStackScreenProps } from './types'
 import { Layout, Text } from '@ui-kitten/components'
 
 export default function NotFoundScreen({ navigation }: RootStackScreenProps<'NotFound'>) {

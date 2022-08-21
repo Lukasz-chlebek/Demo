@@ -1,7 +1,3 @@
-import { SingleCard } from './card'
-
 export interface StudyItem {
-  cardId: number // @TODO: @kamil
+  cardId: number
 }
-
-export type StudyCard = SingleCard

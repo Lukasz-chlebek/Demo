@@ -1,14 +1,13 @@
 import { RootStackScreenProps } from '../../../../core/navigation/types'
-import { Button, Card, Divider, Icon, Input, Layout, Modal, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
+import { Button, Card, Divider, Input, Layout, Modal, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
 import { DecksList } from '../components/DecksList'
 import { useCallback, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { LoadingIndicator } from '../../../../shared/LoadingIndicator'
 import { useFocusEffect } from '@react-navigation/native'
 import { useAddDeckMutation, useGetAllQuery } from '../../data/home_api'
+import { AddIcon } from '../../../../shared/Icons'
 
-const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
-const AddIcon = (props: any) => <Icon {...props} name="plus-outline" />
 
 const AddDeckModal = ({
   onAddCancel,

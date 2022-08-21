@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   Divider,
-  Icon,
   Input,
   Layout,
   Modal,
@@ -19,9 +18,8 @@ import BigList from 'react-native-big-list'
 import { useRef, useState } from 'react'
 import { SingleCard } from '../../domain/card'
 import { useGetAllForDeckQuery } from '../../data/cards_api'
+import { BackIcon, SearchIcon } from '../../../../shared/Icons'
 
-const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
-const SearchIcon = (props: any) => <Icon {...props} name="search" />
 
 const ITEM_HEIGHT = 60
 

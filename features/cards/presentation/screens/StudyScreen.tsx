@@ -1,7 +1,6 @@
 import { RootStackScreenProps } from '../../../../core/navigation/types'
 import {
   Divider,
-  Icon,
   Layout,
   MenuItem,
   OverflowMenu,
@@ -18,9 +17,8 @@ import { ConfirmationDialog } from '../../../../shared/ConfirmationDialog'
 import { StudyCard } from '../components/StudyCard'
 import { useGetQuery, useStoreMutation } from '../../data/study_api'
 import { useDeleteCardMutation } from '../../data/cards_api'
+import { BackIcon, MenuIcon } from '../../../../shared/Icons'
 
-const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
-const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 
 export default function StudyScreen({ navigation, route }: RootStackScreenProps<'Study'>) {
   const [menuVisible, setMenuVisible] = useState(false)

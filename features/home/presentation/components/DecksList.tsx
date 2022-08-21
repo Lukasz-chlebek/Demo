@@ -1,103 +1,13 @@
 import { useState } from 'react'
 
-import { Button, Card, Divider, Input, List, ListItem, MenuItem, Modal, OverflowMenu, Text } from '@ui-kitten/components'
+import { Button, Divider, List, ListItem, MenuItem, OverflowMenu } from '@ui-kitten/components'
 import { useNavigation } from '@react-navigation/native'
 import { Deck } from '../../domain/deck'
 import { RootStackNavigationProps } from '../../../../core/navigation/types'
-import { StyleSheet, View } from 'react-native'
 import { ConfirmationDialog } from '../../../../shared/ConfirmationDialog'
-import { LoadingIndicator } from '../../../../shared/LoadingIndicator'
-import { useDeleteDeckMutation, useEditDeckNameMutation } from '../../data/homeApi'
+import { useDeleteDeckMutation } from '../../data/homeApi'
 import { OptionsIcon } from '../../../../shared/Icons'
-
-const EditDeckNameModal = ({
-  visible,
-  onEditCancel,
-  onEditSuccess,
-  deckId,
-  deckName,
-}: {
-  deckId: number
-  deckName: string
-  visible: boolean
-  onEditCancel: () => void
-  onEditSuccess: () => void
-}) => {
-  const [newDeckName, setNewDeckName] = useState(deckName)
-  const [formSubmitted, setFormSubmitted] = useState(false)
-  const [editDeckName, { isLoading, isSuccess }] = useEditDeckNameMutation()
-
-  const onSavePress = () => {
-    if (isLoading) {
-      return
-    }
-
-    setFormSubmitted(true)
-    if (newDeckName) {
-      editDeckName({
-        deckId,
-        name: newDeckName,
-      })
-        .unwrap()
-        .then(() => {
-          onEditSuccess()
-        })
-    }
-  }
-
-  const onBackDropPress = () => {
-    if (isLoading) {
-      return
-    }
-    onEditCancel()
-  }
-
-  const onCancelPress = () => {
-    if (isLoading) {
-      return
-    }
-    onEditCancel()
-  }
-
-  return (
-    <Modal
-      visible={visible}
-      style={{ width: 300 }}
-      backdropStyle={modalStyles.backdrop}
-      onBackdropPress={onBackDropPress}
-    >
-      <Card disabled={true}>
-        <Text category="s1">Zmiana nazwy talii</Text>
-        <Input
-          status={formSubmitted && !newDeckName ? 'danger' : 'basic'}
-          style={modalStyles.input}
-          value={newDeckName}
-          placeholder="Podaj nazwę talii"
-          onChangeText={(nextValue) => setNewDeckName(nextValue)}
-        />
-        <View style={modalStyles.actionContainer}>
-          {isLoading ? <LoadingIndicator /> : undefined}
-          <Button appearance="ghost" onPress={onCancelPress}>
-            Anuluj
-          </Button>
-          <Button onPress={onSavePress}>Zapisz</Button>
-        </View>
-      </Card>
-    </Modal>
-  )
-}
-const modalStyles = StyleSheet.create({
-  backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  input: {
-    marginVertical: 16,
-  },
-  actionContainer: {
-    flexDirection: 'row',
-    alignSelf: 'flex-end',
-  },
-})
+import { EditDeckNameModal } from './EditDeckNameModal'
 
 const DeckItem = ({ item }: { item: Deck }) => {
   const navigation = useNavigation<RootStackNavigationProps<'Home'>>()
@@ -157,7 +67,7 @@ const DeckItem = ({ item }: { item: Deck }) => {
     <>
       <ListItem
         title={`${item.name}`}
-        // description={`Nowe: ${item.stats.new} Powtorka: ${item.stats.new}`}
+        description={`Nowe: ${item.stats.new} Powtorka: ${item.stats.new}`}
         accessoryRight={OptionsMenu}
         onPress={() => {
           setVisible(false)

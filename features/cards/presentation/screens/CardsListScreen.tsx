@@ -17,8 +17,8 @@ import {
 import { StyleSheet, View } from 'react-native'
 import BigList from 'react-native-big-list'
 import { useRef, useState } from 'react'
-import { useGetAllForDeckQuery } from '../../../../data/api'
-import { SingleCard as CardData } from '../../../../data/model'
+import { SingleCard } from '../../domain/card'
+import { useGetAllForDeckQuery } from '../../data/cards_api'
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 const SearchIcon = (props: any) => <Icon {...props} name="search" />
@@ -107,7 +107,7 @@ export default function CardsListScreen({ navigation, route }: RootStackScreenPr
     />
   )
 
-  const Item = ({ item }: { item: CardData }) => {
+  const Item = ({ item }: { item: SingleCard }) => {
     return (
       <View style={styles.item}>
         <Text style={styles.title}>{item.front}</Text>
@@ -116,7 +116,7 @@ export default function CardsListScreen({ navigation, route }: RootStackScreenPr
     )
   }
 
-  const renderItem = ({ item }: { item: CardData }) => {
+  const renderItem = ({ item }: { item: SingleCard }) => {
     return <Item item={item} />
   }
 
@@ -156,7 +156,7 @@ export default function CardsListScreen({ navigation, route }: RootStackScreenPr
                 data={data}
                 renderItem={renderItem}
                 itemHeight={ITEM_HEIGHT}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.id+''}
               />
             </View>
           </Layout>

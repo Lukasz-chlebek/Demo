@@ -7,7 +7,7 @@ import HomeScreen from '../../features/home/presentation/screens/HomeScreen'
 import { RootStackParamList } from './types'
 import LinkingConfiguration from './LinkingConfiguration'
 import CardsListScreen from '../../features/cards/presentation/screens/CardsListScreen'
-import StudyScreen from '../../features/study/presentation/screens/StudyScreen'
+import StudyScreen from '../../features/cards/presentation/screens/StudyScreen'
 import AddCardScreen from '../../features/cards/presentation/screens/AddCardScreen'
 import EditCardLoaderScreen from '../../features/cards/presentation/screens/EditCardScreen'
 

@@ -3,9 +3,9 @@ import { Button, Card, Divider, Icon, Input, Layout, Modal, Text, TopNavigation,
 import { DecksList } from '../components/DecksList'
 import { useCallback, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useAddDeckMutation, useGetAllQuery } from '../../../../data/api'
 import { LoadingIndicator } from '../../../../shared/LoadingIndicator'
 import { useFocusEffect } from '@react-navigation/native'
+import { useAddDeckMutation, useGetAllQuery } from '../../data/home_api'
 
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
 const AddIcon = (props: any) => <Icon {...props} name="plus-outline" />
@@ -21,7 +21,6 @@ const AddDeckModal = ({
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [addDeck, { isLoading, isSuccess }] = useAddDeckMutation()
 
-  // @TODO: @kamil reload home list
 
   const onSavePress = () => {
     if (isLoading) {

@@ -2,7 +2,7 @@ import { RootStackScreenProps } from '../../../../core/navigation/types'
 import { Divider, Icon, Input, Layout, Spinner, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
 import { StyleSheet } from 'react-native'
 import { useState } from 'react'
-import { useAddCardMutation } from '../../../../data/api'
+import { useAddCardMutation } from '../../data/cards_api'
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 const SaveIcon = (props: any) => <Icon {...props} name="save" />

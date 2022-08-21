@@ -2,12 +2,12 @@ import { useState } from 'react'
 
 import { Button, Card, Divider, Icon, Input, List, ListItem, MenuItem, Modal, OverflowMenu, Text } from '@ui-kitten/components'
 import { useNavigation } from '@react-navigation/native'
-import { Deck } from '../../../../data/model'
-import { useDeleteDeckMutation, useEditDeckNameMutation } from '../../../../data/api'
+import { Deck } from '../../domain/deck'
 import { RootStackNavigationProps } from '../../../../core/navigation/types'
 import { StyleSheet, View } from 'react-native'
 import { ConfirmationDialog } from '../../../../shared/ConfirmationDialog'
 import { LoadingIndicator } from '../../../../shared/LoadingIndicator'
+import { useDeleteDeckMutation, useEditDeckNameMutation } from '../../data/home_api'
 
 const OptionsIcon = (props: any) => <Icon name="more-horizontal-outline" {...props} />
 
@@ -18,7 +18,7 @@ const EditDeckNameModal = ({
   deckId,
   deckName,
 }: {
-  deckId: string
+  deckId: Deck['id']
   deckName: string
   visible: boolean
   onEditCancel: () => void

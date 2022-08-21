@@ -15,8 +15,9 @@ import {
 import { View } from 'react-native'
 import React, { useState } from 'react'
 import { ConfirmationDialog } from '../../../../shared/ConfirmationDialog'
-import { useDeleteCardMutation, useGetQuery, useStoreMutation } from '../../../../data/api'
 import { StudyCard } from '../components/StudyCard'
+import { useGetQuery, useStoreMutation } from '../../data/study_api'
+import { useDeleteCardMutation } from '../../data/cards_api'
 
 const BackIcon = (props: any) => <Icon {...props} name="arrow-back" />
 const MenuIcon = (props: any) => <Icon {...props} name="more-vertical" />
@@ -30,7 +31,11 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
     useDeleteCardMutation()
   const [storeReply, { isSuccess, isLoading: isReplyLoading }] = useStoreMutation()
 
-  const { data: studyItems, error, isLoading } = useGetQuery({
+  const {
+    data: studyItems,
+    error,
+    isLoading,
+  } = useGetQuery({
     deckId: route.params.deckId,
   })
 
@@ -83,7 +88,6 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
 
   const saveReply = (response: 'dontknow' | 'difficult' | 'know') => {
     storeReply({
-      deckId: route.params.deckId,
       cardId: studyItems![currentCard].cardId, // @TODO: @kamil
       response,
     })

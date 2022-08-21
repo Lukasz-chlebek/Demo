@@ -1,4 +1,5 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack'
+import { Deck } from '../../features/home/domain/deck'
 
 declare global {
   namespace ReactNavigation {
@@ -9,17 +10,17 @@ declare global {
 export type RootStackParamList = {
   Home: undefined
   CardsList: {
-    deckId: string
+    deckId: Deck['id']
   }
   Study: {
-    deckId: string
+    deckId: Deck['id']
   }
   AddCard: {
-    deckId: string
+    deckId: Deck['id']
   }
   EditCard: {
-    deckId: string
-    cardId: string
+    deckId: Deck['id']
+    cardId: number // @TODO: @kamil
   }
   NotFound: undefined
 }

@@ -1,12 +1,12 @@
 import { Button, Text } from '@ui-kitten/components'
 import { ScrollView, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useGetCardQuery } from '../../../../data/api'
-import { StudyItem } from '../../../../data/model'
 import { LoadingIndicator } from '../../../../shared/LoadingIndicator'
+import { StudyItem } from '../../domain/study'
+import { useGetCardQuery } from '../../data/cards_api'
 
 export const StudyCard = (props: {
-  deckId: string
+  deckId: number
   item: StudyItem
   styles: any
   onPress: () => void

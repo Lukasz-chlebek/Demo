@@ -1,7 +1,7 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 import { database } from '../../../core/database'
 import { sql } from '@databases/expo'
-import { StudyItem } from '../domain/study'
+import { StudyItem, StudyResponse } from '../domain/study'
 
 let dbStudy: { [key: string]: StudyItem[] } = {
   id1: [
@@ -27,10 +27,7 @@ export const studyApi = createApi({
         }
       },
     }),
-    store: builder.mutation<
-      boolean,
-      { cardId: number; response: 'dontknow' | 'difficult' | 'know' }
-    >({
+    store: builder.mutation<boolean, { cardId: number; response: StudyResponse }>({
       invalidatesTags: ['Study'],
       async queryFn(params) {
         const id = await database.query(

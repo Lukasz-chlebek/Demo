@@ -20,7 +20,7 @@ export const EditDeckNameModal = ({
 }) => {
   const [newDeckName, setNewDeckName] = useState(deckName)
   const [formSubmitted, setFormSubmitted] = useState(false)
-  const [editDeckName, { isLoading, isSuccess }] = useEditDeckNameMutation()
+  const [editDeckName, { isLoading }] = useEditDeckNameMutation()
 
   const onSavePress = () => {
     if (isLoading) {

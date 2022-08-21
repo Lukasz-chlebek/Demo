@@ -11,11 +11,14 @@ export function EditCardScreen({
   route,
   card,
 }: RootStackScreenProps<'EditCard'> & { card: SingleCard }) {
+  const [editCard, { isLoading }] = useEditCardMutation()
+  const [front, setFront] = useState(card.front)
+  const [back, setBack] = useState(card.back)
+  const [formSubmitted, setFormSubmitted] = useState(false)
+
   const renderBackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={() => navigation.pop()} />
   )
-
-  const [editCard, { isLoading, isSuccess }] = useEditCardMutation()
 
   const renderSaveAction = () => (
     <TopNavigationAction
@@ -48,10 +51,6 @@ export function EditCardScreen({
       }}
     />
   )
-
-  const [front, setFront] = useState(card.front)
-  const [back, setBack] = useState(card.back)
-  const [formSubmitted, setFormSubmitted] = useState(false)
 
   return (
     <>
@@ -87,20 +86,18 @@ export default function EditCardLoaderScreen({
   navigation,
   route,
 }: RootStackScreenProps<'EditCard'>) {
-  const {
-    data,
-    error,
-    isLoading: isGetLoading,
-  } = useGetCardQuery({
+  const { data, isLoading } = useGetCardQuery({
     deckId: route.params.deckId,
     cardId: route.params.cardId,
   })
-  return isGetLoading ? (
-    <Spinner />
-  ) : (
-    <EditCardScreen navigation={navigation} route={route} card={data!}></EditCardScreen>
-  )
+
+  if (isLoading) {
+    return <Spinner />
+  }
+
+  return <EditCardScreen navigation={navigation} route={route} card={data!}></EditCardScreen>
 }
+
 const styles = StyleSheet.create({
   input: {
     marginVertical: 12,

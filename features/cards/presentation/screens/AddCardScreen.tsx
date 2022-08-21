@@ -6,11 +6,14 @@ import { useAddCardMutation } from '../../data/cardsApi'
 import { BackIcon, SaveIcon } from '../../../../shared/Icons'
 
 export default function AddCardScreen({ navigation, route }: RootStackScreenProps<'AddCard'>) {
+  const [addCard, { isLoading }] = useAddCardMutation()
+  const [front, setFront] = useState('')
+  const [back, setBack] = useState('')
+  const [formSubmitted, setFormSubmitted] = useState(false)
+
   const renderBackAction = () => (
     <TopNavigationAction icon={BackIcon} onPress={() => navigation.replace('Home')} />
   )
-
-  const [addCard, { isLoading, isSuccess }] = useAddCardMutation()
 
   const renderSaveAction = () => (
     <TopNavigationAction
@@ -40,10 +43,6 @@ export default function AddCardScreen({ navigation, route }: RootStackScreenProp
       }}
     />
   )
-
-  const [front, setFront] = useState('')
-  const [back, setBack] = useState('')
-  const [formSubmitted, setFormSubmitted] = useState(false)
 
   return (
     <>

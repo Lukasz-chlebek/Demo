@@ -1,7 +1,7 @@
 import { Spinner } from '@ui-kitten/components'
-import { StyleSheet, View } from 'react-native'
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 
-export const LoadingIndicator = (props: any) => (
+export const LoadingIndicator = (props: { style?: StyleProp<ViewStyle> }) => (
   <View style={[props.style, styles.indicator]}>
     <Spinner />
   </View>

@@ -1,4 +1,3 @@
-import { RootStackScreenProps } from '../../../../core/navigation/types'
 import { Divider, Layout, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
 import { DecksList } from '../components/DecksList'
 import { useCallback, useState } from 'react'
@@ -8,7 +7,7 @@ import { useGetAllQuery } from '../../data/homeApi'
 import { AddIcon } from '../../../../shared/Icons'
 import { AddDeckModal } from '../components/AddDeckModal'
 
-export default function HomeScreen({ navigation }: RootStackScreenProps<'Home'>) {
+export default function HomeScreen() {
   const [addModalVisible, setAddModalVisible] = useState(false)
   const { data, isLoading, refetch } = useGetAllQuery()
 

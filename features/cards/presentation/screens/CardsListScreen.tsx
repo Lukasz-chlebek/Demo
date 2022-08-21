@@ -11,6 +11,10 @@ import { SearchModal } from '../components/SearchCardModal'
 const ITEM_HEIGHT = 60
 
 export default function CardsListScreen({ navigation, route }: RootStackScreenProps<'CardsList'>) {
+  const { data, isLoading } = useGetAllForDeckQuery({
+    deckId: route.params.deckId,
+  })
+
   const [searchModalVisible, setSearchModalVisible] = useState(false)
   const list = useRef<BigList<SingleCard> & { scrollToIndex({ index }: { index: number }): void }>(
     null,
@@ -42,50 +46,42 @@ export default function CardsListScreen({ navigation, route }: RootStackScreenPr
     return <Item item={item} />
   }
 
-  const { data, isLoading } = useGetAllForDeckQuery({
-    deckId: route.params.deckId,
-  })
+  if (isLoading) {
+    return <Spinner />
+  }
 
   return (
     <>
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <>
-          <SearchModal
-            visible={searchModalVisible}
-            onSearch={(query) => {
-              setSearchModalVisible(false)
+      <SearchModal
+        visible={searchModalVisible}
+        onSearch={(query) => {
+          setSearchModalVisible(false)
 
-              const index = data!.findIndex(
-                (i) => i.front.includes(query) || i.back.includes(query),
-              )
-              if (index) {
-                list.current!.scrollToIndex({ index })
-              }
-            }}
-            onCancel={() => setSearchModalVisible(false)}
-          ></SearchModal>
-          <TopNavigation
-            title="Fiszki"
-            alignment="center"
-            accessoryLeft={renderBackAction}
-            accessoryRight={renderSearchAction}
+          const index = data!.findIndex((i) => i.front.includes(query) || i.back.includes(query))
+          if (index) {
+            list.current!.scrollToIndex({ index })
+          }
+        }}
+        onCancel={() => setSearchModalVisible(false)}
+      ></SearchModal>
+      <TopNavigation
+        title="Fiszki"
+        alignment="center"
+        accessoryLeft={renderBackAction}
+        accessoryRight={renderSearchAction}
+      />
+      <Divider />
+      <Layout style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <BigList
+            ref={list}
+            data={data}
+            renderItem={renderItem}
+            itemHeight={ITEM_HEIGHT}
+            keyExtractor={(item) => item.id + ''}
           />
-          <Divider />
-          <Layout style={{ flex: 1 }}>
-            <View style={{ flex: 1 }}>
-              <BigList
-                ref={list}
-                data={data}
-                renderItem={renderItem}
-                itemHeight={ITEM_HEIGHT}
-                keyExtractor={(item) => item.id + ''}
-              />
-            </View>
-          </Layout>
-        </>
-      )}
+        </View>
+      </Layout>
     </>
   )
 }

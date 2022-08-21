@@ -1,16 +1,5 @@
 import { RootStackScreenProps } from '../../../../core/navigation/types'
-import {
-  Divider,
-  Layout,
-  MenuItem,
-  OverflowMenu,
-  Spinner,
-  StyleService,
-  Text,
-  TopNavigation,
-  TopNavigationAction,
-  useStyleSheet,
-} from '@ui-kitten/components'
+import { Divider, Layout, MenuItem, OverflowMenu, Spinner, Text, TopNavigation, TopNavigationAction } from '@ui-kitten/components'
 import { View } from 'react-native'
 import React, { useState } from 'react'
 import { ConfirmationDialog } from '../../../../shared/ConfirmationDialog'
@@ -18,24 +7,18 @@ import { StudyCard } from '../components/StudyCard'
 import { useGetQuery, useStoreMutation } from '../../data/studyApi'
 import { useDeleteCardMutation } from '../../data/cardsApi'
 import { BackIcon, MenuIcon } from '../../../../shared/Icons'
+import { StudyResponse } from '../../domain/study'
 
 export default function StudyScreen({ navigation, route }: RootStackScreenProps<'Study'>) {
-  const styles = useStyleSheet(themedStyles)
-
-  const [menuVisible, setMenuVisible] = useState(false)
-  const [confirmationDialogVisible, setConfirmationDialogVisible] = useState(false)
-  const [currentCard, setCurrentCard] = useState(0)
-  const [deleteCard, { isLoading: isDeleteLoading, isSuccess: isDeleteSuccess }] =
-    useDeleteCardMutation()
-  const [storeReply, { isSuccess, isLoading: isReplyLoading }] = useStoreMutation()
-
-  const {
-    data: studyItems,
-    error,
-    isLoading,
-  } = useGetQuery({
+  const [deleteCard] = useDeleteCardMutation()
+  const [storeReply, { isLoading: isReplyLoading }] = useStoreMutation()
+  const { data: studyItems, isLoading } = useGetQuery({
     deckId: route.params.deckId,
   })
+
+  const [menuVisible, setMenuVisible] = useState(false)
+  const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false)
+  const [currentCard, setCurrentCard] = useState(0)
 
   const toggleMenu = () => {
     setMenuVisible(!menuVisible)
@@ -64,7 +47,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
           title="Usuń kartę"
           onPress={() => {
             setMenuVisible(false)
-            setConfirmationDialogVisible(true)
+            setDeleteConfirmationVisible(true)
           }}
         />
       </OverflowMenu>
@@ -84,7 +67,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
     }
   }
 
-  const saveReply = (response: 'dontknow' | 'difficult' | 'know') => {
+  const saveReply = (response: StudyResponse) => {
     storeReply({
       cardId: studyItems![currentCard].cardId,
       response,
@@ -95,9 +78,11 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
       })
   }
 
-  return isLoading ? (
-    <Spinner />
-  ) : (
+  if (isLoading) {
+    return <Spinner />
+  }
+
+  return (
     <>
       <TopNavigation
         title="Nauka"
@@ -117,7 +102,6 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
               <StudyCard
                 deckId={route.params.deckId}
                 item={studyItems![currentCard]}
-                styles={styles}
                 onPress={() => {
                   saveReply('dontknow')
                 }}
@@ -138,40 +122,13 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
         )}
       </Layout>
       <ConfirmationDialog
-        visible={confirmationDialogVisible}
+        visible={deleteConfirmationVisible}
         title="Potwierdzenie"
         message="Czy chcesz usunąć kartę?"
-        onCancel={() => setConfirmationDialogVisible(false)}
-        onDone={() => setConfirmationDialogVisible(false)}
+        onCancel={() => setDeleteConfirmationVisible(false)}
+        onDone={() => setDeleteConfirmationVisible(false)}
         action={deleteCardAction}
       ></ConfirmationDialog>
     </>
   )
 }
-
-const themedStyles = StyleService.create({
-  front: {
-    fontSize: 17,
-    padding: 25,
-    textAlign: 'center',
-  },
-  back: {
-    fontSize: 17,
-    borderTopWidth: 1,
-    borderTopColor: 'color-basic-default-border',
-    padding: 25,
-    textAlign: 'center',
-  },
-  showBack: {
-    margin: 15,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    marginHorizontal: 5,
-    marginVertical: 15,
-  },
-  button: {
-    flex: 1,
-    marginHorizontal: 10,
-  },
-})

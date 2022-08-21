@@ -21,7 +21,7 @@ export const studyApi = createApi({
   endpoints: (builder) => ({
     get: builder.query<StudyItem[], { deckId: number }>({
       providesTags: ['Study'],
-      async queryFn(params: { deckId: number }) {
+      async queryFn(params) {
         return {
           data: dbStudy[params.deckId] || [],
         }
@@ -32,7 +32,7 @@ export const studyApi = createApi({
       { cardId: number; response: 'dontknow' | 'difficult' | 'know' }
     >({
       invalidatesTags: ['Study'],
-      async queryFn(params: { cardId: number; response: 'dontknow' | 'difficult' | 'know' }) {
+      async queryFn(params) {
         const id = await database.query(
           sql`INSERT into cards_response (cardid, response, created_at) VALUES (${params.cardId},${
             params.response

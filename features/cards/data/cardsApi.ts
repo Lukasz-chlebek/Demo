@@ -11,7 +11,7 @@ export const cardsApi = createApi({
   endpoints: (builder) => ({
     getAllForDeck: builder.query<SingleCard[], { deckId: number }>({
       providesTags: ['Cards'],
-      async queryFn(params: { deckId: number }) {
+      async queryFn(params) {
         const result = await database.query(sql`SELECT * FROM cards WHERE deckid=${params.deckId};`)
 
         return {
@@ -27,7 +27,7 @@ export const cardsApi = createApi({
     }),
     addCard: builder.mutation<SingleCard, { deckId: number; front: string; back: string }>({
       invalidatesTags: ['Cards'],
-      async queryFn(params: { deckId: number; front: string; back: string }) {
+      async queryFn(params) {
         const id = await database.query(
           sql`INSERT into cards (deckid, front, back) VALUES (${params.deckId},${params.front},${params.back}) RETURNING id;`,
         )
@@ -43,7 +43,7 @@ export const cardsApi = createApi({
     }),
     getCard: builder.query<SingleCard | null, { deckId: number; cardId: number }>({
       providesTags: (result, error, arg) => [{ type: 'Cards', id: arg.cardId }],
-      async queryFn(params: { deckId: number; cardId: number }) {
+      async queryFn(params) {
         const result = await database.query(
           sql`SELECT * FROM cards WHERE deckid=${params.deckId} and id=${params.cardId};`,
         )
@@ -64,7 +64,7 @@ export const cardsApi = createApi({
     editCard: builder.mutation<{}, { deckId: number; cardId: number; front: string; back: string }>(
       {
         invalidatesTags: (result, error, arg) => [{ type: 'Cards', id: arg.cardId }],
-        async queryFn(params: { deckId: number; cardId: number; front: string; back: string }) {
+        async queryFn(params) {
           await database.query(
             sql`UPDATE cards SET front=${params.front}, back=${params.back} WHERE deckid=${params.deckId} and id=${params.cardId}`,
           )
@@ -77,7 +77,7 @@ export const cardsApi = createApi({
     ),
     deleteCard: builder.mutation<{}, { deckId: number; cardId: number }>({
       invalidatesTags: (result, error, arg) => [{ type: 'Cards', id: arg.cardId }],
-      async queryFn(params: { deckId: number; cardId: number }) {
+      async queryFn(params) {
         await database.query(
           sql`DELETE FROM cards WHERE deckid=${params.deckId} and id=${params.cardId}`,
         )

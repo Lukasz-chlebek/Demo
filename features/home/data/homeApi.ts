@@ -25,14 +25,14 @@ export const decksApi = createApi({
     }),
     addDeck: builder.mutation<Deck, { name: string }>({
       invalidatesTags: ['Decks'],
-      async queryFn(body) {
+      async queryFn(params) {
         const id = await database.query(
-          sql`INSERT into decks (name) VALUES (${body.name}) RETURNING id;`,
+          sql`INSERT into decks (name) VALUES (${params.name}) RETURNING id;`,
         )
         return {
           data: {
-            id: +id,
-            name: body.name,
+            id: id[0],
+            name: params.name,
             stats: {
               new: 0,
               review: 0, // @TODO: @kamil
@@ -43,8 +43,8 @@ export const decksApi = createApi({
     }),
     editDeckName: builder.mutation<{}, { deckId: number; name: string }>({
       invalidatesTags: ['Decks'],
-      async queryFn(body) {
-        await database.query(sql`UPDATE decks SET name=${body.name} WHERE id=${body.deckId}`)
+      async queryFn(params) {
+        await database.query(sql`UPDATE decks SET name=${params.name} WHERE id=${params.deckId}`)
 
         return {
           data: {},
@@ -53,8 +53,8 @@ export const decksApi = createApi({
     }),
     deleteDeck: builder.mutation<{}, { deckId: number }>({
       invalidatesTags: ['Decks'],
-      async queryFn(body) {
-        await database.query(sql`DELETE FROM decks WHERE id=${body.deckId}`)
+      async queryFn(params) {
+        await database.query(sql`DELETE FROM decks WHERE id=${params.deckId}`)
 
         return {
           data: {},

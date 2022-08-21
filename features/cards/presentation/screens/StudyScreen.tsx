@@ -21,8 +21,9 @@ import { BackIcon, MenuIcon } from '../../../../shared/Icons'
 
 
 export default function StudyScreen({ navigation, route }: RootStackScreenProps<'Study'>) {
-  const [menuVisible, setMenuVisible] = useState(false)
   const styles = useStyleSheet(themedStyles)
+
+  const [menuVisible, setMenuVisible] = useState(false)
   const [confirmationDialogVisible, setConfirmationDialogVisible] = useState(false)
   const [currentCard, setCurrentCard] = useState(0)
   const [deleteCard, { isLoading: isDeleteLoading, isSuccess: isDeleteSuccess }] =
@@ -86,7 +87,7 @@ export default function StudyScreen({ navigation, route }: RootStackScreenProps<
 
   const saveReply = (response: 'dontknow' | 'difficult' | 'know') => {
     storeReply({
-      cardId: studyItems![currentCard].cardId, // @TODO: @kamil
+      cardId: studyItems![currentCard].cardId,
       response,
     })
       .unwrap()

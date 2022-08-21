@@ -11,9 +11,9 @@ import { EditDeckNameModal } from './EditDeckNameModal'
 
 const DeckItem = ({ item }: { item: Deck }) => {
   const navigation = useNavigation<RootStackNavigationProps<'Home'>>()
-  const [visible, setVisible] = useState(false)
+  const [optionsVisible, setOptionsVisible] = useState(false)
   const [editModalVisible, setEditModalVisible] = useState(false)
-  const [confirmationDialogVisible, setConfirmationDialogVisible] = useState(false)
+  const [deleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false)
   const [deleteDeck] = useDeleteDeckMutation()
 
   const deleteDeckAction = () => {
@@ -22,42 +22,42 @@ const DeckItem = ({ item }: { item: Deck }) => {
     }).unwrap()
   }
 
-  const OptionsButton = (props: any) => (
-    <Button {...props} accessoryLeft={OptionsIcon} onPress={() => setVisible(true)} size="small" />
+  const OptionsButton = (props: unknown) => (
+    <Button {...props} accessoryLeft={OptionsIcon} onPress={() => setOptionsVisible(true)} size="small" />
   )
 
   const OptionsMenu = () => (
     <OverflowMenu
       anchor={OptionsButton}
-      visible={visible}
-      onBackdropPress={() => setVisible(false)}
+      visible={optionsVisible}
+      onBackdropPress={() => setOptionsVisible(false)}
     >
       <MenuItem
         title="Zmiana nazwy"
         onPress={() => {
-          setVisible(false)
+          setOptionsVisible(false)
           setEditModalVisible(true)
         }}
       />
       <MenuItem
         title="Lista słówek"
         onPress={() => {
-          setVisible(false)
+          setOptionsVisible(false)
           navigation.push('CardsList', { deckId: item.id })
         }}
       />
       <MenuItem
         title="Dodaj słówko"
         onPress={() => {
-          setVisible(false)
+          setOptionsVisible(false)
           navigation.push('AddCard', { deckId: item.id })
         }}
       />
       <MenuItem
         title="Usuń"
         onPress={() => {
-          setVisible(false)
-          setConfirmationDialogVisible(true)
+          setOptionsVisible(false)
+          setDeleteConfirmationVisible(true)
         }}
       />
     </OverflowMenu>
@@ -70,7 +70,7 @@ const DeckItem = ({ item }: { item: Deck }) => {
         description={`Nowe: ${item.stats.new} Powtorka: ${item.stats.new}`}
         accessoryRight={OptionsMenu}
         onPress={() => {
-          setVisible(false)
+          setOptionsVisible(false)
           navigation.push('Study', { deckId: item.id })
         }}
       />
@@ -82,11 +82,11 @@ const DeckItem = ({ item }: { item: Deck }) => {
         onEditSuccess={() => setEditModalVisible(false)}
       ></EditDeckNameModal>
       <ConfirmationDialog
-        visible={confirmationDialogVisible}
+        visible={deleteConfirmationVisible}
         title="Potwierdzenie"
         message="Czy chcesz usunąć talię?"
-        onCancel={() => setConfirmationDialogVisible(false)}
-        onDone={() => setConfirmationDialogVisible(false)}
+        onCancel={() => setDeleteConfirmationVisible(false)}
+        onDone={() => setDeleteConfirmationVisible(false)}
         action={deleteDeckAction}
       ></ConfirmationDialog>
     </>

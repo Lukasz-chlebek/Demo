@@ -12,7 +12,9 @@ const ITEM_HEIGHT = 60
 
 export default function CardsListScreen({ navigation, route }: RootStackScreenProps<'CardsList'>) {
   const [searchModalVisible, setSearchModalVisible] = useState(false)
-  const list = useRef<any>(null)
+  const list = useRef<BigList<SingleCard> & { scrollToIndex({ index }: { index: number }): void }>(
+    null,
+  )
   const styles = useStyleSheet(themedStyles)
 
   const renderBackAction = () => (
@@ -59,7 +61,7 @@ export default function CardsListScreen({ navigation, route }: RootStackScreenPr
                 (i) => i.front.includes(query) || i.back.includes(query),
               )
               if (index) {
-                list.current.scrollToIndex({ index })
+                list.current!.scrollToIndex({ index })
               }
             }}
             onCancel={() => setSearchModalVisible(false)}
